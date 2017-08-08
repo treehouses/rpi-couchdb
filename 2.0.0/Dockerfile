@@ -10,9 +10,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM debian:jessie
+FROM resin/rpi-raspbian:jessie-20170726
 
-MAINTAINER Clemens Stolle klaemo@apache.org
+MAINTAINER Abdurrachman Mappuji mappuji@ole.org
 
 # Add CouchDB user account
 RUN groupadd -r couchdb && useradd -d /opt/couchdb -g couchdb couchdb
