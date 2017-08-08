@@ -108,5 +108,6 @@ WORKDIR /opt/couchdb
 EXPOSE 5984 4369 9100
 VOLUME ["/opt/couchdb/data"]
 
-ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 CMD ["/opt/couchdb/bin/couchdb"]
