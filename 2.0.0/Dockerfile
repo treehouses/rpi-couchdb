@@ -95,4 +95,4 @@ EXPOSE 5984 4369 9100
 VOLUME ["/opt/couchdb/data"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["couchdb"]
+CMD ["/opt/couchdb/bin/couchdb"]

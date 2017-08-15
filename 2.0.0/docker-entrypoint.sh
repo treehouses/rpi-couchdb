@@ -11,10 +11,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set -e
-echo alias couchdb=/opt/couchdb/bin/couchdb > ~/.bashrc
-source ~/.bashrc
-
 if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	# we need to set the permissions here because docker mounts volumes as root
 	chown -R couchdb:couchdb /opt/couchdb
@@ -53,7 +49,7 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	fi
 
 
-	exec couchdb "$@"
+	exec /opt/couchdb/bin/couchdb "$@"
 fi
 
 exec "$@"
