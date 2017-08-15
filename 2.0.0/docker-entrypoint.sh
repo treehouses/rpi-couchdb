@@ -12,6 +12,8 @@
 # the License.
 
 set -e
+echo alias couchdb=/opt/couchdb/bin/couchdb > ~/.bashrc
+source ~/.bashrc
 
 if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	# we need to set the permissions here because docker mounts volumes as root
@@ -51,7 +53,7 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	fi
 
 
-	exec gosu couchdb "$@"
+	exec couchdb "$@"
 fi
 
 exec "$@"
