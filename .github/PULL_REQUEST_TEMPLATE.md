@@ -3,13 +3,9 @@
      Please file this form by replacing the Markdown comments
      with your text. If a section needs no action - remove it.
 
-     Also remember, that CouchDB uses the Review-Then-Commit (RTC) model
-     of code collaboration. Positive feedback is represented +1 from committers
-     and negative is a -1. The -1 also means veto, and needs to be addressed
-     to proceed. Once there are no objections, the PR can be merged by a
-     CouchDB committer.
+     Thank your for contributing to Open Learning Exchange
 
-     See: http://couchdb.apache.org/bylaws.html#decisions for more info. -->
+     See: open-learning-exchange.github.io for more info. -->
 
 ## Overview
 
@@ -25,7 +21,7 @@
 ## GitHub issue number
 
 <!-- If this is a significant change, please file a separate issue at:
-     https://github.com/apache/couchdb-docker/issues
+     https://github.com/mappuji/rpi-couchdb/issues
      and include the number here and in commit message(s) using
      syntax like "Fixes #472" or "Fixes apache/couchdb#472".  -->
 
