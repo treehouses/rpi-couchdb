@@ -21,7 +21,7 @@
 ## GitHub issue number
 
 <!-- If this is a significant change, please file a separate issue at:
-     https://github.com/mappuji/rpi-couchdb/issues
+     https://github.com/ole-vi/rpi-couchdb/issues
      and include the number here and in commit message(s) using
      syntax like "Fixes #472" or "Fixes apache/couchdb#472".  -->
 

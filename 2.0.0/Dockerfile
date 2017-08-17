@@ -77,6 +77,7 @@ RUN buildDeps=' \
  && mv /usr/src/couchdb/rel/couchdb /opt/ \
  # Cleanup build detritus
  && apt-get purge -y --auto-remove $buildDeps \
+ && apt-get purge -y --auto-remove x11-common \
  && rm -rf /var/lib/apt/lists/* /usr/lib/node_modules /usr/src/couchdb*
 
 # Add configuration
