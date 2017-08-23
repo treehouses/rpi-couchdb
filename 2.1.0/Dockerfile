@@ -2,7 +2,7 @@
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
 #
-#   http://www.apache.org/licenses/LICENSE-2.1
+#   http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -14,17 +14,18 @@ FROM resin/rpi-raspbian:jessie-20170726
 
 MAINTAINER Abdurrachman Mappuji mappuji@ole.org
 
+# TODO: GPG is not available yet
 # https://www.apache.org/dist/couchdb/KEYS
-ENV GPG_KEYS \
-  15DD4F3B8AACA54740EB78C7B7B7C53943ECCEE1 \
-  1CFBFA43C19B6DF4A0CA3934669C02FFDF3CEBA3 \
-  25BBBAC113C1BFD5AA594A4C9F96B92930380381 \
-  4BFCA2B99BADC6F9F105BEC9C5E32E2D6B065BFB \
-  5D680346FAA3E51B29DBCB681015F68F9DA248BC \
-  7BCCEB868313DDA925DF1805ECA5BCB7BB9656B0 \
-  C3F4DFAEAD621E1C94523AEEC376457E61D50B88 \
-  D2B17F9DA23C0A10991AF2E3D9EE01E47852AEE4 \
-  E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B
+# ENV GPG_KEYS \
+#   15DD4F3B8AACA54740EB78C7B7B7C53943ECCEE1 \
+#   1CFBFA43C19B6DF4A0CA3934669C02FFDF3CEBA3 \
+#   25BBBAC113C1BFD5AA594A4C9F96B92930380381 \
+#   4BFCA2B99BADC6F9F105BEC9C5E32E2D6B065BFB \
+#   5D680346FAA3E51B29DBCB681015F68F9DA248BC \
+#   7BCCEB868313DDA925DF1805ECA5BCB7BB9656B0 \
+#   C3F4DFAEAD621E1C94523AEEC376457E61D50B88 \
+#   D2B17F9DA23C0A10991AF2E3D9EE01E47852AEE4 \
+#   E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B
 
 ENV COUCHDB_VERSION 2.1.0
 
@@ -53,7 +54,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     libicu-dev \
     libmozjs185-dev \
-    build-essential \ 
+    build-essential \
     pkg-config \
     make \
   ' \
@@ -68,7 +69,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
  && cd /usr/src && mkdir couchdb \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
- && gpg --verify couchdb.tar.gz.asc \
+#  && gpg --verify couchdb.tar.gz.asc \
  && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
  && cd couchdb \
  # Build the release and install into /opt
