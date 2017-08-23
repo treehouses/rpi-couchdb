@@ -51,7 +51,7 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	fi
 
 
-	exec /opt/couchdb/bin/couchdb "$@"
+	exec "$@"
 fi
 
 exec "$@"
