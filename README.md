@@ -9,6 +9,18 @@ Credits to [klaemo](https://github.com/klaemo) and [apache](https://github.com/a
 
 This work is hosted in [treehouses/rpi-couchdb](https://hub.docker.com/r/treehouses/rpi-couchdb/tags/)
 
+## Naming and Versioning
+
+Currently we managed 2.x.x version of CouchDB for RaspberryPi.
+For RPi CouchDB 2.0.0
+```
+docker pull treehouses/rpi-couchdb:2.0.0
+```
+For RPi CouchDB 2.1.0
+```
+docker pull treehouses/rpi-couchdb:2.1.0
+```
+
 ## About OLE
 [OLE](https://www.ole.org/) is committed to ensuring that everyone has access to high quality, meaningful learning opportunities, especially girls and young women living in low-resource areas. We work with nation-based entrepreneurs who are transforming education into effective and affordable learning systems that benefit all of their people.
 
