@@ -40,7 +40,7 @@ prepare_package_arm(){
 	BRANCH=$BRANCH_INPUT
 	COMMIT=${COMMIT_INPUT::8}
 	RANDOM_FINGERPRINT=$(random_generator)
-	FINGERPRINT="moodole-$RANDOM_FINGERPRINT"
+	FINGERPRINT="rpi-couchdb-$RANDOM_FINGERPRINT"
 	TEST_DIRECTORY=/tmp/"$FINGERPRINT"
 	REPO_LINK="https://github.com/treehouses/rpi-couchdb.git"
 	FOOTPRINT_NAME=$VERSION-$BRANCH-$COMMIT
@@ -82,5 +82,5 @@ build_message Buil V201 image finished, check build result!
 
 build_message Peform postconditions on build machine..
 remove_temporary_folders
-create_footprint_moodole
+create_footprint_rpi_couchdb
 
