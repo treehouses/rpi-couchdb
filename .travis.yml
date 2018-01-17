@@ -1,14 +1,39 @@
 sudo: required
-
+language: node_js
+node_js:
+- '8'
+addons:
+  ssh_known_hosts: kraken.ole.org
+  apt:
+    packages:
+    - docker-ce
+notifications:
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/063276d3941fa8443947
+    on_success: always
+    on_failure: always
+    on_start: never
 services:
-  - docker
-
-before_install:
-  - docker build -t couchdb:1.6.1 1.6.1
-  - docker build -t couchdb:1.6.1-couchperuser 1.6.1-couchperuser
-  - docker build -t couchdb:2.0.0 2.0.0
-
+- docker
 script:
-  - docker run -d -p 5984:5984 couchdb:1.6.1 && sleep 5 && curl http://localhost:5984
-  - docker run -d -p 5985:5984 couchdb:1.6.1-couchperuser && sleep 5 && curl http://localhost:5985
-  - docker run -d -p 5986:5984 couchdb:2.0.0 && sleep 5 && curl http://localhost:5986
+- source ./.travis/travis_utils.sh
+- build_message No test in this build, only docker image will be built...
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: "./.travis/deploy_docker.sh"
+  on:
+    all_branches: true
+env:
+  global:
+  # DOCKER CREDS
+  - secure: nxRmWtul90EVGmL/X3wxQpkmVtaX7o1fmF6UuD1KmT1Jtn/Mdrdjh6SBhu7lkFeKQbBv2KgCAnbSBDXWTFGduid1eVanX014DihN7h3mAgcsV8qlvia4rReWUp800S2sLHUEQxI3n0l3BSy2u7WafCwZGgW9r7Hw+Ii9nG86rCKUSq4e676zhKyJceEUX/Ayuijnf+Nw4wmZERk6P15zCqv9qe5juTRA4HxGw4tqn+Tu69La0naMjNfX+BGWjRU5rDkTRMtHJvNzqJ0GiXWjAQFYc+z6+vShbr7EAw4sspQsBW2jaAU0MoiR4jDDk+7ciwKJlDO+Fzq7n6hKggO8HEShzxYbWKT5t15toeByHmU+NKzcZRj7wOVd12y4s7qKFQWD4CvMl2ArwGt1q5wTHIJmvkMzBSAh9+e4cd9q0qvRvEwddrGcsVJPIJnfvej213YYWxXp5EooQcdwFxdtUpZZIbFI93QlDh9+s7d5xrukRgJRBf8cAbBIPpXNFhQcM0ZjbMUZw1SnqxJ75zSBfHnYvr7rhe3XLjKFx07USzt1cLRw318yLdPRBtfguj+tcr7YKgn1aa4XdH0UUZQ9e9Y9U5gzmWaAplGxrynZF/wYS0DDaxdbTtln9C+VEzQBD4AgaIs/YFj52JCZ5B1E4hFRCYpK/rirHE5C01PwteA=
+  - secure: IB2QR3tCyzt15mqrgTjvnDnn9fFmrbn6kWbpyobFMBCp5AqfK9RLCkxgISrcW1FGSV+pQ5CGAhgRsnyagGMSu9sGCt21VMV8WDALIi/C3PAPGutnrrUQkXaVvRe6e9p35PxjSkQ2sxRd0gSz/sVIRJ/rUHC6t1JnEgnebDvJSeU3SSwrPVlSeFyBv3gHPDkIODxpr7p024pF/slTM8XJJRYmEiVqUPXKGbzFhSOfdM+oZLU3Ned8FaBA1kAynq81wAylcwNQWSmRizrq2KQlr8OBsTJz+PF+eG1h9j/SG4os86JVfBpxtE4PqsPxQ7ppkTvk57kKXruGq4ZPp7OUDWlDW4t47Ez/KV5KLAt0GQdPbDvoD+RuJhBkPry9BqUGYy4W08gcm8BdXKRdeVYDOaVRpeBynWmqFtIYjJELSEXqaXhdSq2+0Ss5URMQ+Rja3J5NPzyT+0DJgdPvhdWVlu/NnBvmQnj+qD7fzL89Chx5TjRfBE6rFbmKWh+Nn0TeFJPkK2idsyY8NHe0wGjdnkN3JcwlITtmLqJ7RpUQvIEDL9MjSGaKZLMrdmTYjYpHbrR6kgypFEbY4MIJK1cLus/P+DzTxhjNO42JgB57Ao8E/BbaHSpIq82VtGGbIrTCpymdvIl3C+dNCEv+ppcVW3m7Sy4UsJzos2o3zXktQJ0=
+before_install:
+- openssl aes-256-cbc -K $encrypted_904aea9e00f1_key -iv $encrypted_904aea9e00f1_iv
+  -in ./.travis/deploy_rsa.enc -out ./.travis/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ./.travis/deploy_rsa
+- ssh-add ./.travis/deploy_rsa
+
