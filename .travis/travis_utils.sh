@@ -89,13 +89,11 @@ deploy_v200(){
 	login_docker
 	package_v200
 	push_v200
-	docker logout
 }
 
 deploy_v201(){
 	login_docker
 	package_v201
 	push_v201
-	docker logout
 }
 
