@@ -23,10 +23,10 @@ prepare_package(){
 	if [ -z "$COMMIT" ]; then
 		COMMIT=${TRAVIS_COMMIT::8}
 	fi
-	V200_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:$VERSION-$BRANCH-$COMMIT
+	V200_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.0.0-$VERSION-$BRANCH-$COMMIT
 	V200_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.0
-	V201_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:rpi-$VERSION-$BRANCH-$COMMIT
-	V201_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.1
+	V210_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.0-$VERSION-$BRANCH-$COMMIT
+	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 }
 
 remove_temporary_folders(){
@@ -49,15 +49,15 @@ package_v200(){
 	fi
 }
 
-package_v201(){
-	build_message processing $V201_DOCKER_NAME
-	docker build 2.0.1/ -t $V201_DOCKER_NAME
-	build_message done processing $V201_DOCKER_NAME
+package_v210(){
+	build_message processing $V210_DOCKER_NAME
+	docker build 2.1.0/ -t $V210_DOCKER_NAME
+	build_message done processing $V210_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message processing $V201_DOCKER_NAME_LATEST
-		docker tag $V201_DOCKER_NAME $V201_DOCKER_NAME_LATEST
-		build_message done processing $V201_DOCKER_NAME_LATEST
+		build_message processing $V210_DOCKER_NAME_LATEST
+		docker tag $V210_DOCKER_NAME $V210_DOCKER_NAME_LATEST
+		build_message done processing $V210_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -73,15 +73,15 @@ push_v200(){
 	fi
 }
 
-push_v201(){
-	build_message pushing $V201_DOCKER_NAME
-	docker push $V201_DOCKER_NAME
-	build_message done pushing $V201_DOCKER_NAME
+push_v210(){
+	build_message pushing $V210_DOCKER_NAME
+	docker push $V210_DOCKER_NAME
+	build_message done pushing $V210_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message pushing $V201_DOCKER_NAME_LATEST
-		docker push $V201_DOCKER_NAME_LATEST
-		build_message done pushing $V201_DOCKER_NAME_LATEST
+		build_message pushing $V210_DOCKER_NAME_LATEST
+		docker push $V210_DOCKER_NAME_LATEST
+		build_message done pushing $V210_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -91,9 +91,9 @@ deploy_v200(){
 	push_v200
 }
 
-deploy_v201(){
+deploy_v210(){
 	login_docker
-	package_v201
-	push_v201
+	package_v210
+	push_v210
 }
 

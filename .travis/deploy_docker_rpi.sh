@@ -76,9 +76,9 @@ build_message Build V200 image started...
 deploy_v200
 build_message Buil V200 image finished, check build result!
 
-build_message Build V201 image started...
-deploy_v201
-build_message Buil V201 image finished, check build result!
+build_message Build V210 image started...
+deploy_v210
+build_message Buil V210 image finished, check build result!
 
 build_message Peform postconditions on build machine..
 remove_temporary_folders
