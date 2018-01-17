@@ -1,4 +1,7 @@
 # Raspberry Pi CouchDB Docker Image
+
+[![Build Status](https://travis-ci.org/treehouses/rpi-couchdb.svg?branch=master)](https://travis-ci.org/treehouses/rpi-couchdb)
+
 It is a fork of https://github.com/apache/couchdb-docker but for raspberrypi.
 This is an effort to dockerize CouchDB to be able to run on Raspberry Pi.
 
