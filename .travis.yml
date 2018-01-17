@@ -32,7 +32,7 @@ env:
   - secure: q/369BFJEMBPl5IEsHou4vnRIs+9Q9gWRjMPa9GMLpidlP73iOoBlr83Gsjr1bdjaELSSEMx8w3gkzm9wcIxz0UDIxWRs+bWAHjXeF1Qt1KFPAsqhE0I4Nj8LAbBTk7rcmCHzOj1ciyNuEIKYm7pkJWr2BEAu+gAzZwQryPuOZlq0dar2Ihfgn5Y7Ef/wnpDyQWkzTfDzqtx6WrcsFhfyd0lfNvsqo9lkizX1hV4G9/9e9XDwgSlBTrOQYtRn4AtGnwwfVIcJR97MCizGEYCVnhCGmEwX2hku1bJpamQSXK4Jie4FKGQLXaLFAaqOH9wd9ZM8c52ZFokNBV8IuWWaq6qkqiYD1cs0XMJxv2nBx9VCxQwx7nvGpxehLskp3xyUj0ShORyiCbnpYOUtnBDbkUh95OLXmq5Rb7FZP4tBq3uWB3lKmng3qc4841A9AryqVd3j/IuEFWtccmSPHjQAQr4lUUaWFEqWtWCjl7kU4GCmGGffgzkZGy+QuBloZ2ENTPpy5GEoTDTcxivIqKBbz/gXDuk1QTz6xpSOeLNGbNyqjgsfZQNRN2TzC8i6VZkPDSyD8O3creCT4/Ewz4kmNuz7aulDO1H6cm13RQwJMQbnZohw5TGYIgBuFd+2sYzjcHJV+7gulUUbBTNcPJLXyamvj16T3Krieo5p9NZVYs=
 before_install:
 - openssl aes-256-cbc -K $encrypted_019e91a7bb09_key -iv $encrypted_019e91a7bb09_iv
-  -in deploy_rsa.enc -out ./.travis/deploy_rsa -d
+  -in ./.travis/deploy_rsa.enc -out ./.travis/deploy_rsa -d
 - eval "$(ssh-agent -s)"
 - chmod 600 ./.travis/deploy_rsa
 - ssh-add ./.travis/deploy_rsa
