@@ -27,6 +27,8 @@ prepare_package(){
 	V200_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.0
 	V210_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.0-$VERSION-$BRANCH-$COMMIT
 	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
+	V211_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.1-$VERSION-$BRANCH-$COMMIT
+	V211_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.1
 }
 
 remove_temporary_folders(){
@@ -61,6 +63,18 @@ package_v210(){
 	fi
 }
 
+package_v211(){
+	build_message processing $V211_DOCKER_NAME
+	docker build 2.1.1/ -t $V211_DOCKER_NAME
+	build_message done processing $V211_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message processing $V211_DOCKER_NAME_LATEST
+		docker tag $V211_DOCKER_NAME $V211_DOCKER_NAME_LATEST
+		build_message done processing $V211_DOCKER_NAME_LATEST
+	fi
+}
+
 push_v200(){
 	build_message pushing $V200_DOCKER_NAME
 	docker push $V200_DOCKER_NAME
@@ -85,6 +99,18 @@ push_v210(){
 	fi
 }
 
+push_v211(){
+	build_message pushing $V211_DOCKER_NAME
+	docker push $V211_DOCKER_NAME
+	build_message done pushing $V211_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message pushing $V211_DOCKER_NAME_LATEST
+		docker push $V211_DOCKER_NAME_LATEST
+		build_message done pushing $V211_DOCKER_NAME_LATEST
+	fi
+}
+
 deploy_v200(){
 	login_docker
 	package_v200
@@ -97,3 +123,8 @@ deploy_v210(){
 	push_v210
 }
 
+deploy_v211(){
+	login_docker
+	package_v211
+	push_v211
+}

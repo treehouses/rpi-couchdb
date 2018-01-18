@@ -80,6 +80,10 @@ build_message Build V210 image started...
 deploy_v210
 build_message Buil V210 image finished, check build result!
 
+build_message Build V211 image started...
+deploy_v211
+build_message Buil V211 image finished, check build result!
+
 build_message Peform postconditions on build machine..
 remove_temporary_folders
 create_footprint_rpi_couchdb
