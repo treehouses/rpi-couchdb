@@ -31,14 +31,6 @@ prepare_package(){
 	V211_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.1
 }
 
-remove_temporary_folders(){
-	rm -rf "$TEST_DIRECTORY"
-}
-
-create_footprint_rpi_couchdb() {
-  echo $(date +%Y-%m-%d.%H-%M-%S) from rpi-couhdb >> $FOOTPRINT
-}
-
 package_v200(){
 	build_message processing $V200_DOCKER_NAME
 	docker build 2.0.0/ -t $V200_DOCKER_NAME
@@ -127,4 +119,20 @@ deploy_v211(){
 	login_docker
 	package_v211
 	push_v211
+}
+
+deploy_multiarch(){
+    if [ "$BRANCH" = "master" ]
+	then
+        build_message Pushing multi-arch manifest to Docker Cloud
+        login_docker
+        wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-arm64
+        bash ./manifest-tool push from-spec ./.travis/multiarch_manifest.yml
+        build_message Seccessfully multi-arch manifest to Docker Cloud.
+        build_message Removing Manifest Tool
+        rm ./manifest-tool
+    else
+        build_message Branch is not master. So no need to push multiarch manifest.
+    fi
+
 }

@@ -3,10 +3,10 @@ language: node_js
 node_js:
 - '8'
 addons:
-  ssh_known_hosts: kraken.ole.org
   apt:
     packages:
     - docker-ce
+    - wget
 notifications:
   webhooks:
     urls:
@@ -22,7 +22,9 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: "./.travis/deploy_docker.sh"
+  script: 
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - travis_wait 45 bash ./.travis/deploy_docker.sh
   on:
     all_branches: true
 env:
@@ -30,10 +32,3 @@ env:
   # DOCKER CREDS
   - secure: GcjN5PmJRoXducn6LQSI6Tu7r2xvgrv0dI9ouPqUtCfAtDP/6M+T4gdeTWcD+fS/K7J45nteJtTQ0C20FNKuNViPDFAQ7bNcbXiaJ7o/E/yZZHZPpl8Pvz+sWfoqfR5VVQTLliJxcfKEs8rsiPwVW7RARVmU8hcE6/nE79Ux0GPrK3fm0UZhHNm8AMFLXzuVp3iWgWOV0ticN1OHVhY5zbR/vVgfV4yvo6PnBAs00LwxaDk6rJCdQs2YHCzdFsQnuIDOHSyrhHisie1AMBunw5tj7guW4Y1eL475oLK87SNIBC5azwerrANuvrGsGnTeZFrZ1CA516NByZFNak8N3b9ncTNlzcllfqlC8WF3slDP3aLXiG/SoxBlfN4MXDuv2v9QavxQQEEGoN/SwrSG9TUf94qu3+RSh9HsJK5pnwW9ceZywHD3dEUWecSXzJggTaIXmII2OvicWqglD8NdxMmAYrLE4qx4paX/cq2wIxf5+2DqsMxg+T9ISiXizHd+D3Dai2v/IEvrjPd6MPYdXec88kJcca94wadWYeg+/SCtZkScgUy51POuQV3GHps7/IJFDOfQtrCwD3NGRhdt0qsmlmdk7TkRUk36nfKcUni6HAj54xnXAW/WqFK0El6MRy/dUlAHK/X9HVHHqIG8RUH9dgUIUZ7MhQ+3eENXxTw=
   - secure: q/369BFJEMBPl5IEsHou4vnRIs+9Q9gWRjMPa9GMLpidlP73iOoBlr83Gsjr1bdjaELSSEMx8w3gkzm9wcIxz0UDIxWRs+bWAHjXeF1Qt1KFPAsqhE0I4Nj8LAbBTk7rcmCHzOj1ciyNuEIKYm7pkJWr2BEAu+gAzZwQryPuOZlq0dar2Ihfgn5Y7Ef/wnpDyQWkzTfDzqtx6WrcsFhfyd0lfNvsqo9lkizX1hV4G9/9e9XDwgSlBTrOQYtRn4AtGnwwfVIcJR97MCizGEYCVnhCGmEwX2hku1bJpamQSXK4Jie4FKGQLXaLFAaqOH9wd9ZM8c52ZFokNBV8IuWWaq6qkqiYD1cs0XMJxv2nBx9VCxQwx7nvGpxehLskp3xyUj0ShORyiCbnpYOUtnBDbkUh95OLXmq5Rb7FZP4tBq3uWB3lKmng3qc4841A9AryqVd3j/IuEFWtccmSPHjQAQr4lUUaWFEqWtWCjl7kU4GCmGGffgzkZGy+QuBloZ2ENTPpy5GEoTDTcxivIqKBbz/gXDuk1QTz6xpSOeLNGbNyqjgsfZQNRN2TzC8i6VZkPDSyD8O3creCT4/Ewz4kmNuz7aulDO1H6cm13RQwJMQbnZohw5TGYIgBuFd+2sYzjcHJV+7gulUUbBTNcPJLXyamvj16T3Krieo5p9NZVYs=
-before_install:
-- openssl aes-256-cbc -K $encrypted_019e91a7bb09_key -iv $encrypted_019e91a7bb09_iv
-  -in ./.travis/deploy_rsa.enc -out ./.travis/deploy_rsa -d
-- eval "$(ssh-agent -s)"
-- chmod 600 ./.travis/deploy_rsa
-- ssh-add ./.travis/deploy_rsa
-

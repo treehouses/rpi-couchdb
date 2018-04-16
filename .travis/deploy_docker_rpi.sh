@@ -47,12 +47,6 @@ prepare_package_arm(){
 	FOOTPRINT=~/travis-build/$FOOTPRINT_NAME
 }
 
-clone_branch(){
-    cd /tmp && rm -rf $FINGERPRINT;
-    git clone -b "$BRANCH" "$REPO_LINK" "$FINGERPRINT" && cd "$FINGERPRINT" || exit
-    ls
-    git checkout "$COMMIT_INPUT"
-}
 
 random_generator(){
     awk -v min=10000000 -v max=99999999 'BEGIN{srand(); print int(min+rand()*(max-min+1))}'
@@ -61,30 +55,23 @@ random_generator(){
 build_message Preparing builds...
 prepare_package_arm
 
-build_message Cloning commits...
-clone_branch
-
-
 build_message setting up build utils...
 source ./.travis/travis_utils.sh
 prepare_package
 
-build_message Creating footprint...
-create_footprint_rpi_couchdb
 
 build_message Build V200 image started...
 deploy_v200
-build_message Buil V200 image finished, check build result!
+build_message Build V200 image finished, check build result!
 
 build_message Build V210 image started...
 deploy_v210
-build_message Buil V210 image finished, check build result!
+build_message Build V210 image finished, check build result!
 
 build_message Build V211 image started...
 deploy_v211
-build_message Buil V211 image finished, check build result!
+build_message Build V211 image finished, check build result!
 
-build_message Peform postconditions on build machine..
-remove_temporary_folders
-create_footprint_rpi_couchdb
+build_message Preparing to Push multi-arch manifest to Docker Cloud ..
+deploy_multiarch
 
