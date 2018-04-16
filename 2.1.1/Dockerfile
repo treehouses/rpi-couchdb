@@ -13,7 +13,7 @@
 FROM ubuntu as builder
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
-COPY ./2.1.1/crosscompile.sh .
+COPY ./crosscompile.sh .
 RUN bash ./crosscompile.sh armv7 install
 
 FROM resin/armv7hf-debian-qemu
