@@ -17,14 +17,13 @@ notifications:
 services:
 - docker
 script:
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - source ./.travis/travis_utils.sh
 - build_message No test in this build, only docker image will be built...
 deploy:
   provider: script
   skip_cleanup: true
-  script: 
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - travis_wait 45 bash ./.travis/deploy_docker.sh
+  script: "./.travis/deploy_docker.sh"
   on:
     all_branches: true
 env:
