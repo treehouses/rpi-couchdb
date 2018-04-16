@@ -10,7 +10,7 @@ build_message(){
 }
 
 login_docker(){
-    docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    yes | docker login --username=$DOCKER_USER --password=$DOCKER_PASS
 }
 
 prepare_package(){
