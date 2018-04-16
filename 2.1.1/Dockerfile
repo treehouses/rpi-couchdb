@@ -10,9 +10,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/rpi-raspbian:jessie-20170726
+FROM resin/armv7hf-debian-qemu
 
-MAINTAINER Abdurrachman Mappuji mappuji@ole.org
+LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
 # TODO: GPG is not available yet
 # https://www.apache.org/dist/couchdb/KEYS
