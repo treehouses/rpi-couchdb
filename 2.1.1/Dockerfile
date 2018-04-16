@@ -10,9 +10,13 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/armv7hf-debian-qemu
-
+FROM ubuntu as builder
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
+
+COPY ./2.1.1/crosscompile.sh .
+RUN bash ./crosscompile.sh armv7 install
+
+FROM resin/armv7hf-debian-qemu
 
 # TODO: GPG is not available yet
 # https://www.apache.org/dist/couchdb/KEYS
@@ -28,6 +32,12 @@ LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 #   E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B
 
 ENV COUCHDB_VERSION 2.1.1
+
+#create dirs and links for the npn module
+RUN mkdir -p /usr/lib/node_modules; \
+    ln -s /usr/lib/node_modules/grunt-cli/bin/grunt /usr/bin/grunt
+
+COPY --from=builder /usr/lib/node_modules /usr/lib/node_modules
 
 # Add CouchDB user account
 RUN groupadd -r couchdb && useradd -d /opt/couchdb -g couchdb couchdb
@@ -59,10 +69,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     make \
   ' \
  && apt-get update -y -qq && apt-get install -y --no-install-recommends $buildDeps \
- && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+ && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
+ && echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list \
+ && echo 'deb-src https://deb.nodesource.com/node_4.x jessie main' >> /etc/apt/sources.list.d/nodesource.list \
  && apt-get update -y -qq \
  && apt-get install -y nodejs \
- && npm install -g grunt-cli \
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
