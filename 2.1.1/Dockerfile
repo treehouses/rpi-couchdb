@@ -16,7 +16,7 @@ LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 COPY ./crosscompile.sh .
 RUN bash ./crosscompile.sh armv7 install
 
-FROM arm32v7/debian:jessie-slim
+FROM resin/armv7hf-debian-qemu
 
 # TODO: GPG is not available yet
 # https://www.apache.org/dist/couchdb/KEYS
