@@ -58,6 +58,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
  # Download dev dependencies
  && buildDeps=' \
     apt-transport-https \
+    git \
     gcc \
     g++ \
     erlang-dev \
