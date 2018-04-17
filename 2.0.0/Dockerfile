@@ -10,9 +10,13 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/armv7hf-debian-qemu
-
+FROM ubuntu as builder
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
+
+COPY ./crosscompile.sh .
+RUN bash ./crosscompile.sh armv7 install
+
+FROM resin/armv7hf-debian-qemu
 
 # https://www.apache.org/dist/couchdb/KEYS
 ENV GPG_KEYS \
@@ -27,6 +31,13 @@ ENV GPG_KEYS \
   E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B
 
 ENV COUCHDB_VERSION 2.0.0
+
+#create dirs and links for the npn module
+RUN mkdir -p /usr/lib/node_modules; \
+    ln -s /usr/lib/node_modules/grunt-cli/bin/grunt /usr/bin/grunt
+
+COPY --from=builder /usr/lib/node_modules /usr/lib/node_modules
+
 
 # Add CouchDB user account
 RUN groupadd -r couchdb && useradd -d /opt/couchdb -g couchdb couchdb
@@ -61,12 +72,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
  && echo 'deb-src https://deb.nodesource.com/node_4.x jessie main' >> /etc/apt/sources.list.d/nodesource.list \
  && apt-get update -y -qq \
  && apt-get install -y nodejs \
- && npm install -g grunt-cli \
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
- && gpg --verify couchdb.tar.gz.asc \
+ && curl -fSL https://github.com/apache/couchdb/archive/$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
+ #&& curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
+ #&& gpg --verify couchdb.tar.gz.asc \
  && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
  && cd couchdb \
  # Build the release and install into /opt

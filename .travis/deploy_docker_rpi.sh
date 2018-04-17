@@ -61,11 +61,11 @@ prepare_package
 
 
 build_message Build V200 image started...
-#deploy_v200
+deploy_v200
 build_message Build V200 image finished, check build result!
 
 build_message Build V210 image started...
-#deploy_v210
+deploy_v210
 build_message Build V210 image finished, check build result!
 
 build_message Build V211 image started...
