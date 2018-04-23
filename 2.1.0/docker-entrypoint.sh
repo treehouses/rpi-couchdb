@@ -1,5 +1,5 @@
 #!/bin/bash
-# Licensed under the Apache License, Version 2.1 (the "License"); you may not
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
 #
@@ -12,6 +12,17 @@
 # the License.
 
 set -e
+
+# first arg is `-something` or `+something`
+if [ "${1#-}" != "$1" ] || [ "${1#+}" != "$1" ]; then
+	set -- /opt/couchdb/bin/couchdb "$@"
+fi
+
+# first arg is the bare word `couchdb`
+if [ "$1" = 'couchdb' ]; then
+	shift
+	set -- /opt/couchdb/bin/couchdb "$@"
+fi
 
 if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	# we need to set the permissions here because docker mounts volumes as root
@@ -33,6 +44,12 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 		chown couchdb:couchdb /opt/couchdb/etc/local.d/docker.ini
 	fi
 
+	if [ "$COUCHDB_SECRET" ]; then
+		# Set secret
+		printf "[couch_httpd_auth]\nsecret = %s\n" "$COUCHDB_SECRET" >> /opt/couchdb/etc/local.d/docker.ini
+		chown couchdb:couchdb /opt/couchdb/etc/local.d/docker.ini
+	fi
+
 	# if we don't find an [admins] section followed by a non-comment, display a warning
 	if ! grep -Pzoqr '\[admins\]\n[^;]\w+' /opt/couchdb/etc/local.d/*.ini; then
 		# The - option suppresses leading tabs but *not* spaces. :)
@@ -51,7 +68,7 @@ if [ "$1" = '/opt/couchdb/bin/couchdb' ]; then
 	fi
 
 
-	exec "$@"
+	exec gosu couchdb "$@"
 fi
 
 exec "$@"
