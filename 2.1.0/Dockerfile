@@ -86,6 +86,7 @@ RUN buildDeps=' \
     apt-transport-https \
     gcc \
     g++ \
+    git \
     erlang-dev \
     libcurl4-openssl-dev \
     libicu-dev \

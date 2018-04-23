@@ -76,6 +76,7 @@ ENV COUCHDB_VERSION 2.0.0
 RUN buildDeps=' \
     apt-transport-https \
     gcc \
+    git
     g++ \
     erlang-dev \
     libcurl4-openssl-dev \
