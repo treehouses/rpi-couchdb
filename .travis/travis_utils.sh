@@ -29,6 +29,20 @@ prepare_package(){
 	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 	V211_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.1-$VERSION-$BRANCH-$COMMIT
 	V211_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.1
+    V171_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.1-$VERSION-$BRANCH-$COMMIT
+	V171_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.1
+}
+
+package_v171(){
+	build_message processing $V171_DOCKER_NAME
+	docker build 1.7.1/ -t $V171_DOCKER_NAME
+	build_message done processing $V171_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message processing $V171_DOCKER_NAME_LATEST
+		docker tag $V171_DOCKER_NAME $V171_DOCKER_NAME_LATEST
+		build_message done processing $V171_DOCKER_NAME_LATEST
+	fi
 }
 
 package_v200(){
@@ -67,6 +81,18 @@ package_v211(){
 	fi
 }
 
+push_v171(){
+	build_message pushing $V171_DOCKER_NAME
+	docker push $V171_DOCKER_NAME
+	build_message done pushing $V171_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message pushing $V171_DOCKER_NAME_LATEST
+		docker push $V171_DOCKER_NAME_LATEST
+		build_message done pushing $V171_DOCKER_NAME_LATEST
+	fi
+}
+
 push_v200(){
 	build_message pushing $V200_DOCKER_NAME
 	docker push $V200_DOCKER_NAME
@@ -101,6 +127,12 @@ push_v211(){
 		docker push $V211_DOCKER_NAME_LATEST
 		build_message done pushing $V211_DOCKER_NAME_LATEST
 	fi
+}
+
+deploy_v171(){
+	login_docker
+	package_v171
+	push_v171
 }
 
 deploy_v200(){

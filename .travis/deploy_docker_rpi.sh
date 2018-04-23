@@ -59,14 +59,9 @@ build_message setting up build utils...
 source ./.travis/travis_utils.sh
 prepare_package
 
-
-build_message Build V200 image started...
-deploy_v200
-build_message Build V200 image finished, check build result!
-
-build_message Build V210 image started...
-deploy_v210
-build_message Build V210 image finished, check build result!
+build_message Build V171 image started...
+deploy_v171
+build_message Build V171 image finished, check build result!
 
 build_message Build V211 image started...
 deploy_v211

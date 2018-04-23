@@ -76,7 +76,7 @@ ENV COUCHDB_VERSION 2.0.0
 RUN buildDeps=' \
     apt-transport-https \
     gcc \
-    git
+    git \
     g++ \
     erlang-dev \
     libcurl4-openssl-dev \
@@ -89,8 +89,7 @@ RUN buildDeps=' \
  && echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list \
  && echo 'deb-src https://deb.nodesource.com/node_4.x jessie main' >> /etc/apt/sources.list.d/nodesource.list \
  && apt-get update -y -qq \
- && apt-get install -y nodejs \
- 
+ && apt-get install -y nodejs \ 
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
  && curl -fSL https://github.com/apache/couchdb/archive/$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
