@@ -158,9 +158,12 @@ deploy_multiarch(){
 	then
         build_message Pushing multi-arch manifest to Docker Cloud
         login_docker
-        wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-arm64
-        bash ./manifest-tool push from-spec ./.travis/multiarch_manifest.yml
-        build_message Seccessfully multi-arch manifest to Docker Cloud.
+        wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
+        chmod +x ./manifest-tool
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.1.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.1.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_latest.yml
+        build_message Successfully pushed multi-arch manifest to Docker Cloud.
         build_message Removing Manifest Tool
         rm ./manifest-tool
     else

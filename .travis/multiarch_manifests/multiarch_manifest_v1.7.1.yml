@@ -1,0 +1,13 @@
+image: treehouses/couchdb:1.7.1
+manifests:
+  -
+    image: treehouses/rpi-couchdb:1.7.1
+    platform:
+      architecture: arm
+      os: linux
+  -
+    image: amd64/couchdb:1.7.1
+    platform:
+      architecture: amd64
+      os: linux
+      
