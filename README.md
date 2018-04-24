@@ -10,18 +10,27 @@ Credits to [klaemo](https://github.com/klaemo) and [apache](https://github.com/a
 
 ## Where it hosted
 
-This work is hosted in [treehouses/rpi-couchdb](https://hub.docker.com/r/treehouses/rpi-couchdb/tags/)
+This work is hosted in [treehouses/couchdb](https://hub.docker.com/r/treehouses/couchdb/)
 
 ## Naming and Versioning
 
-Currently we managed 2.x.x version of CouchDB for RaspberryPi.
+Currently we maintain multi-architecture repository of 2.x.x version as well as 1.7.1 of CouchDB. Supported architectures: `amd64, arm`
+
+For RPi CouchDB 1.7.1
+```
+docker pull treehouses/couchdb:1.7.1
+```
 For RPi CouchDB 2.0.0
 ```
-docker pull treehouses/rpi-couchdb:2.0.0
+docker pull treehouses/couchdb:2.0.0
 ```
 For RPi CouchDB 2.1.0
 ```
-docker pull treehouses/rpi-couchdb:2.1.0
+docker pull treehouses/couchdb:2.1.0
+```
+For RPi CouchDB 2.1.1
+```
+docker pull treehouses/couchdb:2.1.1
 ```
 
 ## About OLE
