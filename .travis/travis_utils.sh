@@ -10,7 +10,7 @@ build_message(){
 }
 
 login_docker(){
-    docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    yes | docker login --username=$DOCKER_USER --password=$DOCKER_PASS
 }
 
 prepare_package(){
@@ -29,14 +29,20 @@ prepare_package(){
 	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 	V211_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.1-$VERSION-$BRANCH-$COMMIT
 	V211_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.1
+	V171_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.1-$VERSION-$BRANCH-$COMMIT
+	V171_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.1
 }
 
-remove_temporary_folders(){
-	rm -rf "$TEST_DIRECTORY"
-}
-
-create_footprint_rpi_couchdb() {
-  echo $(date +%Y-%m-%d.%H-%M-%S) from rpi-couhdb >> $FOOTPRINT
+package_v171(){
+	build_message processing $V171_DOCKER_NAME
+	docker build 1.7.1/ -t $V171_DOCKER_NAME
+	build_message done processing $V171_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message processing $V171_DOCKER_NAME_LATEST
+		docker tag $V171_DOCKER_NAME $V171_DOCKER_NAME_LATEST
+		build_message done processing $V171_DOCKER_NAME_LATEST
+	fi
 }
 
 package_v200(){
@@ -72,6 +78,18 @@ package_v211(){
 		build_message processing $V211_DOCKER_NAME_LATEST
 		docker tag $V211_DOCKER_NAME $V211_DOCKER_NAME_LATEST
 		build_message done processing $V211_DOCKER_NAME_LATEST
+	fi
+}
+
+push_v171(){
+	build_message pushing $V171_DOCKER_NAME
+	docker push $V171_DOCKER_NAME
+	build_message done pushing $V171_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message pushing $V171_DOCKER_NAME_LATEST
+		docker push $V171_DOCKER_NAME_LATEST
+		build_message done pushing $V171_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -111,6 +129,12 @@ push_v211(){
 	fi
 }
 
+deploy_v171(){
+	login_docker
+	package_v171
+	push_v171
+}
+
 deploy_v200(){
 	login_docker
 	package_v200
@@ -127,4 +151,23 @@ deploy_v211(){
 	login_docker
 	package_v211
 	push_v211
+}
+
+deploy_multiarch(){
+    if [ "$BRANCH" = "master" ]
+	then
+        build_message Pushing multi-arch manifest to Docker Cloud
+        login_docker
+        wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
+        chmod +x ./manifest-tool
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.1.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.1.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_latest.yml
+        build_message Successfully pushed multi-arch manifest to Docker Cloud.
+        build_message Removing Manifest Tool
+        rm ./manifest-tool
+    else
+        build_message Branch is not master. So no need to push multiarch manifest.
+    fi
+
 }
