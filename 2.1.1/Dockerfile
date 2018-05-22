@@ -56,8 +56,6 @@ RUN set -ex; \
 	gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
 	rm -r "$GNUPGHOME" /usr/local/bin/tini.asc; \
 	chmod +x /usr/local/bin/tini; \
-	tini --version; \
-	\
 	apt-get purge -y --auto-remove wget
 
 # https://www.apache.org/dist/couchdb/KEYS
