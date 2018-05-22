@@ -21,7 +21,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     erlang-nox \
-    libicu52 \
+    libicu55 \
     libmozjs185-1.0 \
     libnspr4 \
     libnspr4-0d \
