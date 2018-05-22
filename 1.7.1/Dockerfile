@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/armv7hf-debian-qemu
+FROM multiarch/ubuntu-core:armhf-xenial
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
 # Install instructions from https://cwiki.apache.org/confluence/display/COUCHDB/Debian
