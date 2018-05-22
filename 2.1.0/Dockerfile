@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM multiarch/ubuntu-core:armhf-xenial
+FROM resin/rpi-raspbian
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
 

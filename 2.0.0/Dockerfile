@@ -16,7 +16,7 @@ LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 COPY ./crosscompile.sh .
 RUN bash ./crosscompile.sh armv7 install
 
-FROM multiarch/ubuntu-core:armhf-xenial
+FROM resin/rpi-raspbian
 
 ENV COUCHDB_VERSION 2.0.0
 
