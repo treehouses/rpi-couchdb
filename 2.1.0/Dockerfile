@@ -49,7 +49,10 @@ RUN set -ex; \
 	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	chmod +x /usr/local/bin/gosu; \
 	\
-# install tini
+# check if tini exists
+        if ! type "tini" > /dev/null; then \
+        \
+# if not then install tini
 	wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-$dpkgArch"; \
 	wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-$dpkgArch.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
@@ -59,6 +62,7 @@ RUN set -ex; \
 	chmod +x /usr/local/bin/tini; \
 	tini --version; \
 	\
+	fi; \
 	apt-get purge -y --auto-remove wget
 
 # https://www.apache.org/dist/couchdb/KEYS
