@@ -47,7 +47,7 @@ RUN set -ex; \
     chmod +x /usr/local/bin/gosu; \
     \
 # check if tini exists
-    if ! type "tini > /dev/null; then \
+    if ! type "tini" > /dev/null; then \
     \
 # if not then install tini
     wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-$dpkgArch"; \
