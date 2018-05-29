@@ -156,8 +156,8 @@ deploy_v211(){
 deploy_v171_arm64(){
 	login_docker
 	sed -i -e "s/\(resin\/rpi-raspbian\)/resin\/aarch64-debian/" 1.7.1/Dockerfile
-	V171_DOCKER_NAME_LATEST="arm64-$V171_DOCKER_NAME_LATEST"
-	V171_DOCKER_NAME="arm64-$V171_DOCKER_NAME"
+	V171_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.1"
+	V171_DOCKER_NAME="arm64-$DOCKER_ORG/$DOCKER_REPO:1.7.1-$VERSION-$BRANCH-$COMMIT"
 	package_v171
 	push_v171
 }
@@ -165,8 +165,8 @@ deploy_v171_arm64(){
 deploy_v211_arm64(){
 	login_docker
 	sed -i -e "s/\(resin\/rpi-raspbian\)/resin\/aarch64-debian/" 2.1.1/Dockerfile
-	V211_DOCKER_NAME_LATEST="arm64-$V211_DOCKER_NAME_LATEST"
-	V211_DOCKER_NAME="arm64-$V211_DOCKER_NAME"
+	V211_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.1"
+	V211_DOCKER_NAME="arm64-$DOCKER_ORG/$DOCKER_REPO:2.1.1-$VERSION-$BRANCH-$COMMIT"
 	package_v211
 	push_v211
 }
