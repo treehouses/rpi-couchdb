@@ -67,6 +67,14 @@ build_message Build V211 image started...
 deploy_v211
 build_message Build V211 image finished, check build result!
 
+build_message Build V171 arm64 image started...
+deploy_v171_arm64
+build_message Build V171 arm64 image finished, check build result!
+
+build_message Build V211 arm64 image started...
+deploy_v211_arm64
+build_message Build V211 arm64 image finished, check build result!
+
 build_message Preparing to Push multi-arch manifest to Docker Cloud ..
 deploy_multiarch
 
