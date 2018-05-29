@@ -16,7 +16,7 @@ LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 COPY ./crosscompile.sh .
 RUN bash ./crosscompile.sh armv7 install
 
-FROM resin/armv7hf-debian-qemu
+FROM resin/rpi-raspbian
 
 ENV COUCHDB_VERSION 2.0.0
 
@@ -47,12 +47,17 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
   && gpg --verify /usr/local/bin/gosu.asc \
   && rm /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu \
-  && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5 \
-  && curl -o /usr/local/bin/tini -fSL "https://github.com/krallin/tini/releases/download/v0.14.0/tini" \
+  && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
+# check if tini exists
+  if ! type "tini" > /dev/null; then \
+  \
+# if not then install tini  
+  curl -o /usr/local/bin/tini -fSL "https://github.com/krallin/tini/releases/download/v0.14.0/tini" \
   && curl -o /usr/local/bin/tini.asc -fSL "https://github.com/krallin/tini/releases/download/v0.14.0/tini.asc" \
   && gpg --verify /usr/local/bin/tini.asc \
   && rm /usr/local/bin/tini.asc \
-  && chmod +x /usr/local/bin/tini
+  && chmod +x /usr/local/bin/tini; \
+  fi;
 
 # https://www.apache.org/dist/couchdb/KEYS
 ENV GPG_KEYS \
