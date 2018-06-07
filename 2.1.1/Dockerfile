@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/rpi-raspbian
+FROM resin/rpi-raspbian as builder
 #FROM treehouses/rpi-couchdb:2.1.1 as builder
 
 RUN mkdir /pkgs \
