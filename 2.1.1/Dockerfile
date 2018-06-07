@@ -69,8 +69,7 @@ RUN apk --no-cache --update add \
     openssl
 
 #Copy some deps from builder
-COPY --from=builder /pkgs/usr /
-
+COPY --from=builder /pkgs/usr/* /usr/local/
   
 # grab su-exec for easy step-down from root and tini for signal handling
 RUN apk --no-cache --update add su-exec
