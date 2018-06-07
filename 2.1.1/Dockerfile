@@ -69,8 +69,8 @@ RUN apk --no-cache --update add \
     openssl
 
 #Copy some deps from builder
-COPY --from=builder /pkgs/usr/* /usr/local/
-  
+COPY --from=builder /pkgs/usr /usr/local
+
 # grab su-exec for easy step-down from root and tini for signal handling
 RUN apk --no-cache --update add su-exec
 
@@ -115,12 +115,11 @@ ENV COUCHDB_VERSION 2.1.1
 
 # Download dev dependencies
 RUN buildDeps=' \
+    build-base \
     libc6-compat \
     libcurl \
     libgcc \
     libstdc++ \
-    gcc \
-    g++ \
     erlang-dev \
     curl-dev \
     icu-dev \
@@ -136,7 +135,7 @@ RUN buildDeps=' \
  && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
  && cd couchdb \
  # Build the release and install into /opt
- && ./configure --disable-docs \
+ && ./configure -c --disable-docs \
  && make release \
  && mv /usr/src/couchdb/rel/couchdb /opt/ \
  # Cleanup build detritus
