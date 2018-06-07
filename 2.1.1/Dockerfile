@@ -20,7 +20,7 @@ RUN mkdir /pkgs \
     && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
     && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'`; \
        do  \
-            `dpkg-deb -x $f.deb . && rm $f.deb` \
+            `dpkg-deb -x $f.deb . && rm $f.deb`; \
        done;
 
 FROM resin/raspberry-pi-alpine
