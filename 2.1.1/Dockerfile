@@ -127,7 +127,7 @@ RUN buildDeps=' \
     icu-dev \
     make \
   ' \
- && apk --update --no-cache $buildDeps \
+ && apk --update --no-cache add $buildDeps \
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
