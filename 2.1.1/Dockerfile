@@ -16,7 +16,7 @@ FROM resin/rpi-raspbian
 RUN mkdir /pkgs \
     && cd /pkgs  \
     && apt-get update \
-    && apt-get install wget
+    && apt-get install wget \
     && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
     && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'`; \
        do  \
