@@ -88,7 +88,7 @@ RUN set -ex; \
 RUN mkdir -p /opt/couchdb
 COPY --from=builder /opt/couchdb /opt/couchdb
 
-#copy some librarues from builder
+#copy some libraries from builder
 #COPY --from=builder /usr/lib/erlang/erts-6.2 /usr/lib/erlang/erts-6.2
 RUN rm -rf /opt/couchdb/erts-6.2 && ln -s /usr/lib/erlang/erts-9.1.5 /opt/couchdb/erts-6.2
 RUN ln -s libncursesw.so.6 /usr/lib/libtinfo.so.5
