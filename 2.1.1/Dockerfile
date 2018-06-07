@@ -15,12 +15,13 @@ FROM resin/rpi-raspbian
 
 RUN mkdir /pkgs \
     && cd /pkgs  \
+    && apt-get update \
+    && apt-get install wget
     && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
-    && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'` \
+    && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'`; \
        do  \
-            dpkg-deb -x $f.deb . \
-            rm $f \
-       done \
+            `dpkg-deb -x $f.deb . && rm $f.deb` \
+       done;
 
 FROM resin/raspberry-pi-alpine
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
