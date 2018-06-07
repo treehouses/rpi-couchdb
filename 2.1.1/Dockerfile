@@ -83,17 +83,58 @@ RUN set -ex; \
 	\
 	fi; \
 	apk del wget
+    
+# https://www.apache.org/dist/couchdb/KEYS
+ENV GPG_KEYS \
+  15DD4F3B8AACA54740EB78C7B7B7C53943ECCEE1 \
+  1CFBFA43C19B6DF4A0CA3934669C02FFDF3CEBA3 \
+  25BBBAC113C1BFD5AA594A4C9F96B92930380381 \
+  4BFCA2B99BADC6F9F105BEC9C5E32E2D6B065BFB \
+  5D680346FAA3E51B29DBCB681015F68F9DA248BC \
+  7BCCEB868313DDA925DF1805ECA5BCB7BB9656B0 \
+  C3F4DFAEAD621E1C94523AEEC376457E61D50B88 \
+  D2B17F9DA23C0A10991AF2E3D9EE01E47852AEE4 \
+  E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B \
+  29E4F38113DF707D722A6EF91FE9AF73118F1A7C \
+  2EC788AE3F239FA13E82D215CDE711289384AE37
+RUN set -xe \
+  && for key in $GPG_KEYS; do \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+  done
 
-#From builder 
-RUN mkdir -p /opt/couchdb
-COPY --from=builder /opt/couchdb /opt/couchdb
+ENV COUCHDB_VERSION 2.1.1
 
-#copy some libraries from builder
-#COPY --from=builder /usr/lib/erlang/erts-6.2 /usr/lib/erlang/erts-6.2
-RUN rm -rf /opt/couchdb/erts-6.2 && ln -s /usr/lib/erlang/erts-9.1.5 /opt/couchdb/erts-6.2
-RUN ln -s libncursesw.so.6 /usr/lib/libtinfo.so.5
-#RUN mkdir -p /lib/arm-linux-gnueabihf && ln -s arm-linux-gnueabihf/ld-2.19.so /lib/ld-linux-armhf.so.3
-#COPY --from=builder /lib/arm-linux-gnueabihf /lib/arm-linux-gnueabihf
+# Download dev dependencies
+RUN buildDeps=' \
+    libc6-compat \
+    libcurl \
+    libgcc \
+    libstdc++ \
+    gcc \
+    g++ \
+    erlang-dev \
+    curl-dev \
+    icu-dev \
+  #  libmozjs185-dev \
+    make \
+  ' \
+ && apk --update --no-cache $buildDeps \
+ # Acquire CouchDB source code
+ && cd /usr/src && mkdir couchdb \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
+ && gpg --batch --verify couchdb.tar.gz.asc couchdb.tar.gz \
+ && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
+ && cd couchdb \
+ # Build the release and install into /opt
+ && ./configure --disable-docs \
+ && make release \
+ && mv /usr/src/couchdb/rel/couchdb /opt/ \
+ # Cleanup build detritus
+ && apt-get purge -y --auto-remove $buildDeps \
+ && rm -rf /var/lib/apt/lists/* /usr/src/couchdb* \
+ && mkdir /opt/couchdb/data \
+ && chown -R couchdb:couchdb /opt/couchdb
 
 
 # Add configuration
