@@ -139,7 +139,7 @@ RUN buildDeps=' \
  && make release \
  && mv /usr/src/couchdb/rel/couchdb /opt/ \
  # Cleanup build detritus
- && apt-get purge -y --auto-remove $buildDeps \
+ && apk del $buildDeps \
  && rm -rf /var/lib/apt/lists/* /usr/src/couchdb* \
  && mkdir /opt/couchdb/data \
  && chown -R couchdb:couchdb /opt/couchdb
