@@ -10,8 +10,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# Original Image: resin/rpi-raspbian
-FROM treehouses/rpi-couchdb:2.1.1 as builder
+FROM resin/rpi-raspbian
+#FROM treehouses/rpi-couchdb:2.1.1 as builder
+
+RUN mkdir /pkgs \
+    && cd /pkgs  \
+    && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
+    && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'` \
+       do  \
+            dpkg-deb -x $f.deb . \
+            rm $f \
+       done \
 
 FROM resin/raspberry-pi-alpine
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
@@ -58,9 +67,9 @@ RUN apk --no-cache --update add \
     pwgen \
     openssl
 
-#Copy libmozjs185 from builder
-COPY --from=builder /usr/lib/libmozjs185.so.1.0 /usr/lib/libmozjs185.so.1.0
-COPY --from=builder /usr/lib/libmozjs185.so.1.0.0 /usr/lib/libmozjs185.so.1.0.0
+#Copy some deps from builder
+COPY --from=builder /pkgs/usr /
+
   
 # grab su-exec for easy step-down from root and tini for signal handling
 RUN apk --no-cache --update add su-exec
@@ -68,7 +77,7 @@ RUN apk --no-cache --update add su-exec
 
 ENV TINI_VERSION 0.16.1
 RUN set -ex; \
-	# check if tini exists
+# check if tini exists
         if ! type "tini" > /dev/null; then \
         \
 # if not then install tini
@@ -115,7 +124,6 @@ RUN buildDeps=' \
     erlang-dev \
     curl-dev \
     icu-dev \
-  #  libmozjs185-dev \
     make \
   ' \
  && apk --update --no-cache $buildDeps \
