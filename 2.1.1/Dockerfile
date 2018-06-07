@@ -129,6 +129,7 @@ RUN buildDeps=' \
   ' \
  && apk --update --no-cache add $buildDeps \
  # Acquire CouchDB source code
+ && mkdir -p  /usr/src
  && cd /usr/src && mkdir couchdb \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
  && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
