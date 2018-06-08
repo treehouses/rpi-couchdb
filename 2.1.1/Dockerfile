@@ -18,6 +18,8 @@ RUN mkdir /pkgs \
     && apt-get update \
     && apt-get install -y wget \
     && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
+    && wget $(apt-get install --reinstall --print-uris -qq libnspr4-dev | cut -d"'" -f2 | grep "/libnspr4-dev_") \
+    && wget $(apt-get install --reinstall --print-uris -qq libnspr4 | cut -d"'" -f2 | grep "/libnspr4_") \
     && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'`; \
        do  \
             `dpkg-deb -x $f.deb . && rm $f.deb`; \
@@ -69,7 +71,14 @@ RUN apk --no-cache --update add \
     openssl
 
 #Copy some deps from builder
-COPY --from=builder /pkgs/usr /usr/local
+#COPY --from=builder /pkgs/usr /usr/local/
+COPY --from=builder /pkgs/usr/ /usr/
+RUN cd /usr/lib \
+    && for  des  in `ls -1 arm-linux-gnueabihf` ; \
+    do \
+        `ln -s  arm-linux-gnueabihf/$des ./$des` ; \
+     done;
+     
 
 # grab su-exec for easy step-down from root and tini for signal handling
 RUN apk --no-cache --update add su-exec
