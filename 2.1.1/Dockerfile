@@ -25,6 +25,7 @@ RUN mkdir /pkgs \
             `dpkg-deb -x $f.deb . && rm $f.deb`; \
        done;
 
+
 FROM resin/raspberry-pi-alpine
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
@@ -72,19 +73,56 @@ RUN apk --no-cache --update add \
 
 #Copy some deps from builder
 #COPY --from=builder /pkgs/usr /usr/local/
-COPY --from=builder /pkgs/usr/ /usr/
-RUN cd /usr/lib \
-    && for  des  in `ls -1 arm-linux-gnueabihf` ; \
-    do \
-        `ln -s  arm-linux-gnueabihf/$des ./$des` ; \
-     done;
+#COPY --from=builder /pkgs/usr/ /usr/
+#RUN cd /usr/lib \
+#    && for  des  in `ls -1 arm-linux-gnueabihf` ; \
+#    do \
+#        `ln -s  arm-linux-gnueabihf/$des ./$des` ; \
+#     done;
 
-# Add glibc
-RUN apk --update --no-cache add ca-certificates wget \
-    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
-    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk \
-    && apk add glibc-2.27-r0.apk \
-    &&  apk del  ca-certificates wget
+RUN set -x \
+    ## libmozjs185 
+    ## - dependencies
+    && apk update \
+    && apk --no-cache add \
+        nspr \
+     && apk --no-cache add --virtual .builddeps \
+        clang \
+        clang-libs \
+        build-base \
+        m4 \
+        nspr-dev \
+        perl \ 
+        python \
+        zip \
+    ## - autoconf 2.13
+    && wget -q -O - http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz \
+        | tar -xzf - -C /tmp \
+    && cd /tmp/autoconf* \
+    && ./configure --prefix=/usr/local \
+    && make \
+    && make install \
+    && wget -q -O - http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz \
+        | tar -xzf - -C /tmp \
+    && cd /tmp/js-1.8.5/js/src \
+    ## - build 
+    ## - disable #pragma visibility
+    && sed -ri 's/ac_cv_have_visibility_builtin_bug=no/ac_cv_have_visibility_builtin_bug=yes/' configure.in \
+    && autoconf \
+    && mkdir build_OPT.OBJ \
+    && cd build_OPT.OBJ \
+    && CFLAGS="-O2 -mcpu=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard" CHOST="armv6j-hardfloat-linux-gnueabi" ../configure --prefix=/usr \
+    && make \
+    && make install \
+    ## - clean
+    && cd /tmp \
+    && rm -rf \
+        /usr/local/bin/autoconf \
+        /usr/local/share/autoconf \
+        /usr/local/info \
+        /tmp/autoconf* \
+        /tmp/js-1.8* 
+
 
 # grab su-exec for easy step-down from root and tini for signal handling
 RUN apk --no-cache --update add su-exec
