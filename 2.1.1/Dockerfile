@@ -20,6 +20,7 @@ RUN mkdir /pkgs \
     && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-dev | cut -d"'" -f2)  \
     && wget $(apt-get install --reinstall --print-uris -qq libnspr4-dev | cut -d"'" -f2 | grep "/libnspr4-dev_") \
     && wget $(apt-get install --reinstall --print-uris -qq libnspr4 | cut -d"'" -f2 | grep "/libnspr4_") \
+    && wget $(apt-get install --reinstall --print-uris -qq libc6 | cut -d"'" -f2 | grep "/libc6_") \
     && for f in `ls -1 *.deb | sed 's/\(.*\)\..*/\1/'`; \
        do  \
             `dpkg-deb -x $f.deb . && rm $f.deb`; \
