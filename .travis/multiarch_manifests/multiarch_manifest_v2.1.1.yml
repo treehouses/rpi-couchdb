@@ -6,7 +6,7 @@ manifests:
       architecture: arm
       os: linux
   -
-    image: treehouses/arm64-rpi-couchdb:2.1.1
+    image: treehouses/rpi-couchdb:arm64-2.1.1
     platform:
       architecture: arm64
       os: linux
