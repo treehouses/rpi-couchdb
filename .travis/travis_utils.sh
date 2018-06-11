@@ -37,7 +37,7 @@ package_v171(){
 	build_message processing $V171_DOCKER_NAME
 	docker build 1.7.1/ -t $V171_DOCKER_NAME
 	build_message done processing $V171_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message processing $V171_DOCKER_NAME_LATEST
 		docker tag $V171_DOCKER_NAME $V171_DOCKER_NAME_LATEST
@@ -49,7 +49,7 @@ package_v200(){
 	build_message processing $V200_DOCKER_NAME
 	docker build 2.0.0/ -t $V200_DOCKER_NAME
 	build_message done processing $V200_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message processing $V200_DOCKER_NAME_LATEST
 		docker tag $V200_DOCKER_NAME $V200_DOCKER_NAME_LATEST
@@ -61,7 +61,7 @@ package_v210(){
 	build_message processing $V210_DOCKER_NAME
 	docker build 2.1.0/ -t $V210_DOCKER_NAME
 	build_message done processing $V210_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message processing $V210_DOCKER_NAME_LATEST
 		docker tag $V210_DOCKER_NAME $V210_DOCKER_NAME_LATEST
@@ -73,7 +73,7 @@ package_v211(){
 	build_message processing $V211_DOCKER_NAME
 	docker build 2.1.1/ -t $V211_DOCKER_NAME
 	build_message done processing $V211_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message processing $V211_DOCKER_NAME_LATEST
 		docker tag $V211_DOCKER_NAME $V211_DOCKER_NAME_LATEST
@@ -85,7 +85,7 @@ push_v171(){
 	build_message pushing $V171_DOCKER_NAME
 	docker push $V171_DOCKER_NAME
 	build_message done pushing $V171_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message pushing $V171_DOCKER_NAME_LATEST
 		docker push $V171_DOCKER_NAME_LATEST
@@ -97,7 +97,7 @@ push_v200(){
 	build_message pushing $V200_DOCKER_NAME
 	docker push $V200_DOCKER_NAME
 	build_message done pushing $V200_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message pushing $V200_DOCKER_NAME_LATEST
 		docker push $V200_DOCKER_NAME_LATEST
@@ -109,7 +109,7 @@ push_v210(){
 	build_message pushing $V210_DOCKER_NAME
 	docker push $V210_DOCKER_NAME
 	build_message done pushing $V210_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message pushing $V210_DOCKER_NAME_LATEST
 		docker push $V210_DOCKER_NAME_LATEST
@@ -121,7 +121,7 @@ push_v211(){
 	build_message pushing $V211_DOCKER_NAME
 	docker push $V211_DOCKER_NAME
 	build_message done pushing $V211_DOCKER_NAME
-	if [ "$BRANCH" = "add-arm64-support" ]
+	if [ "$BRANCH" = "master" ]
 	then
 		build_message pushing $V211_DOCKER_NAME_LATEST
 		docker push $V211_DOCKER_NAME_LATEST
@@ -166,7 +166,7 @@ deploy_v211_arm64(){
 	login_docker
 	rm 2.1.1/Dockerfile
     mv 2.1.1/Dockerfile-arm64 2.1.1/Dockerfile
-    if [ "$BRANCH" = "add-arm64-support" ]
+    if [ "$BRANCH" = "master" ]
 	then
         sed -i -e "s/\(treehouses\/rpi-couchdb:2\.1\.1\)/$V211_DOCKER_NAME_LATEST/" 2.1.1/Dockerfile
     else
@@ -179,7 +179,7 @@ deploy_v211_arm64(){
 }
 
 deploy_multiarch(){
-    if [ "$BRANCH" = "add-arm64-support" ]
+    if [ "$BRANCH" = "master" ]
 	then
         build_message Pushing multi-arch manifest to Docker Cloud
         login_docker
