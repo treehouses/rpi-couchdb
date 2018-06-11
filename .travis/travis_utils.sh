@@ -164,7 +164,14 @@ deploy_v171_arm64(){
 
 deploy_v211_arm64(){
 	login_docker
-	sed -i -e "s/\(resin\/rpi-raspbian\)/resin\/aarch64-debian/" 2.1.1/Dockerfile
+	rm 2.1.1/Dockerfile
+    mv 2.1.1/Dockerfile-arm64 2.1.1/Dockerfile
+    if [ "$BRANCH" = "master" ]
+	then
+        sed -i -e "s/\(treehouses\/rpi-couchdb:2\.1\.1\)/$V211_DOCKER_NAME_LATEST/" 2.1.1/Dockerfile
+    else
+        sed -i -e "s/\(treehouses\/rpi-couchdb:2\.1\.1\)/$V211_DOCKER_NAME/" 2.1.1/Dockerfile
+    fi
 	V211_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.1"
 	V211_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.1-$VERSION-$BRANCH-$COMMIT"
 	package_v211
