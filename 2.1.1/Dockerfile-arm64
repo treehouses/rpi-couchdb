@@ -13,12 +13,6 @@
 #We will be building  64-bit after 32-bit. So we can use this as builder
 FROM treehouses/rpi-couchdb:2.1.1 as builder
 
-RUN mkdir /pkgs \
-    && cd /pkgs  \
-    && apt-get update \
-    && apt-get install -y wget \
-    && wget $(apt-get install --reinstall --print-uris -qq libmozjs185-1.0 | cut -d"'" -f2 | grep "/libmozjs185-1.0_") 
-  
 FROM resin/aarch64-debian
 LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
@@ -35,6 +29,7 @@ RUN dpkg --add-architecture armhf \
     erlang-reltool:armhf \
     haproxy:armhf \
     libicu52:armhf \
+    libmozjs185-1.0:armhf
     openssl \
   && rm -rf /var/lib/apt/lists/*
 
