@@ -70,21 +70,8 @@ RUN set -ex; \
 	fi; \
 	apt-get purge -y --auto-remove wget
 
-#Copy 32bit mozjs deb From builder 
-COPY --from=builder /pkgs /root
-RUN  mkdir -p /opt/couchdb \
-    && apt-get update && apt-get -y install gdebi-core \
-     && for f in `ls -1 /root/*.deb | sed 's/\(.*\)\..*/\1/'`; \
-       do  \
-            echo  $f  "\n"; \
-            apt-get update;  \
-            gdebi $f.deb;  \
-            #apt-get install -f; \ 
-            rm -rf /var/lib/apt/lists/*; \
-       done; \
-       apt-get purge -y --auto-remove gdebi-core;
-#remove pkgs
 
+RUN  mkdir -p /opt/couchdb
 #Copy pre-compiled couchdb From builder 
 #This is to be done as CouchDB doesn't compile on arm64
 COPY --from=builder /opt/couchdb /opt/couchdb
