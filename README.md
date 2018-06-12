@@ -10,11 +10,16 @@ Credits to [klaemo](https://github.com/klaemo) and [apache](https://github.com/a
 
 ## Where it hosted
 
-This work is hosted in [treehouses/couchdb](https://hub.docker.com/r/treehouses/couchdb/)
+This work is hosted in [treehouses/couchdb](https://hub.docker.com/r/treehouses/couchdb/). It is a multi architecture image.
+
+## Supported architectures
+ `amd64`, `arm`, `arm64`
+ 
+ (Note: The image for `amd64` is the official couchdb docker image, which can also be found at [amd64/couchdb](https://hub.docker.com/r/amd64/couchdb/))
 
 ## Naming and Versioning
 
-Currently we maintain multi-architecture repository of 2.x.x version as well as 1.7.1 of CouchDB. Supported architectures: `amd64, arm`
+Currently we maintain multi-architecture repository of 2.x.x version as well as 1.7.1 of CouchDB.
 
 For RPi CouchDB 1.7.1
 ```
