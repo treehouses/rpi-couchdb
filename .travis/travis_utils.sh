@@ -27,21 +27,21 @@ prepare_package(){
 	V200_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.0
 	V210_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.0-$VERSION-$BRANCH-$COMMIT
 	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
-	V211_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.1-$VERSION-$BRANCH-$COMMIT
-	V211_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.1
-	V171_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.1-$VERSION-$BRANCH-$COMMIT
-	V171_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.1
+	v212_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.2-$VERSION-$BRANCH-$COMMIT
+	v212_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.2
+	v172_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.2-$VERSION-$BRANCH-$COMMIT
+	v172_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.2
 }
 
-package_v171(){
-	build_message processing $V171_DOCKER_NAME
-	docker build 1.7.1/ -t $V171_DOCKER_NAME
-	build_message done processing $V171_DOCKER_NAME
+package_v172(){
+	build_message processing $v172_DOCKER_NAME
+	docker build 1.7.2/ -t $v172_DOCKER_NAME
+	build_message done processing $v172_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message processing $V171_DOCKER_NAME_LATEST
-		docker tag $V171_DOCKER_NAME $V171_DOCKER_NAME_LATEST
-		build_message done processing $V171_DOCKER_NAME_LATEST
+		build_message processing $v172_DOCKER_NAME_LATEST
+		docker tag $v172_DOCKER_NAME $v172_DOCKER_NAME_LATEST
+		build_message done processing $v172_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -69,27 +69,27 @@ package_v210(){
 	fi
 }
 
-package_v211(){
-	build_message processing $V211_DOCKER_NAME
-	docker build 2.1.1/ -t $V211_DOCKER_NAME
-	build_message done processing $V211_DOCKER_NAME
+package_v212(){
+	build_message processing $v212_DOCKER_NAME
+	docker build 2.1.2/ -t $v212_DOCKER_NAME
+	build_message done processing $v212_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message processing $V211_DOCKER_NAME_LATEST
-		docker tag $V211_DOCKER_NAME $V211_DOCKER_NAME_LATEST
-		build_message done processing $V211_DOCKER_NAME_LATEST
+		build_message processing $v212_DOCKER_NAME_LATEST
+		docker tag $v212_DOCKER_NAME $v212_DOCKER_NAME_LATEST
+		build_message done processing $v212_DOCKER_NAME_LATEST
 	fi
 }
 
-push_v171(){
-	build_message pushing $V171_DOCKER_NAME
-	docker push $V171_DOCKER_NAME
-	build_message done pushing $V171_DOCKER_NAME
+push_v172(){
+	build_message pushing $v172_DOCKER_NAME
+	docker push $v172_DOCKER_NAME
+	build_message done pushing $v172_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message pushing $V171_DOCKER_NAME_LATEST
-		docker push $V171_DOCKER_NAME_LATEST
-		build_message done pushing $V171_DOCKER_NAME_LATEST
+		build_message pushing $v172_DOCKER_NAME_LATEST
+		docker push $v172_DOCKER_NAME_LATEST
+		build_message done pushing $v172_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -117,22 +117,22 @@ push_v210(){
 	fi
 }
 
-push_v211(){
-	build_message pushing $V211_DOCKER_NAME
-	docker push $V211_DOCKER_NAME
-	build_message done pushing $V211_DOCKER_NAME
+push_v212(){
+	build_message pushing $v212_DOCKER_NAME
+	docker push $v212_DOCKER_NAME
+	build_message done pushing $v212_DOCKER_NAME
 	if [ "$BRANCH" = "master" ]
 	then
-		build_message pushing $V211_DOCKER_NAME_LATEST
-		docker push $V211_DOCKER_NAME_LATEST
-		build_message done pushing $V211_DOCKER_NAME_LATEST
+		build_message pushing $v212_DOCKER_NAME_LATEST
+		docker push $v212_DOCKER_NAME_LATEST
+		build_message done pushing $v212_DOCKER_NAME_LATEST
 	fi
 }
 
-deploy_v171(){
+deploy_v172(){
 	login_docker
-	package_v171
-	push_v171
+	package_v172
+	push_v172
 }
 
 deploy_v200(){
@@ -147,10 +147,10 @@ deploy_v210(){
 	push_v210
 }
 
-deploy_v211(){
+deploy_v212(){
 	login_docker
-	package_v211
-	push_v211
+	package_v212
+	push_v212
 }
 
 deploy_multiarch(){
@@ -160,8 +160,8 @@ deploy_multiarch(){
         login_docker
         wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
         chmod +x ./manifest-tool
-        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.1.yml
-        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.1.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.2.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.2.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_latest.yml
         build_message Successfully pushed multi-arch manifest to Docker Cloud.
         build_message Removing Manifest Tool
