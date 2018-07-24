@@ -105,9 +105,9 @@ deploy_v212_arm64(){
     mv 2.1.2/Dockerfile-arm64 2.1.2/Dockerfile
     if [ "$BRANCH" = "master" ]
 	then
-        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v211_DOCKER_NAME_LATEST|" 2.1.2/Dockerfile
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v212_DOCKER_NAME_LATEST|" 2.1.2/Dockerfile
     else
-        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v211_DOCKER_NAME|" 2.1.2/Dockerfile
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v212_DOCKER_NAME|" 2.1.2/Dockerfile
     fi
 	v212_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2"
 	v212_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2-$VERSION-$BRANCH-$COMMIT"
