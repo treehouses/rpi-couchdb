@@ -10,21 +10,26 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM resin/rpi-raspbian
-LABEL maintainer="sahil@ole.org,mappuji@ole.org"
+#We will be building  64-bit after 32-bit. So we can use this as builder.
+FROM treehouses/rpi-couchdb:2.1.2 as builder
 
+FROM resin/aarch64-debian
+LABEL maintainer="sahil@ole.org,mappuji@ole.org"
 
 # Add CouchDB user account
 RUN groupadd -r couchdb && useradd -d /opt/couchdb -g couchdb couchdb
 
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
+RUN dpkg --add-architecture armhf \
+    && apt-get update -y && apt-get install -y --no-install-recommends \
     ca-certificates \
-    curl \
-    erlang-nox \
-    erlang-reltool \
-    haproxy \
-    libicu52 \
-    libmozjs185-1.0 \
+    ca-certificates:armhf \
+    curl:armhf \
+    #erlang-nox: dummy packages dont support different architecture install. Hence install all separately.
+    erlang-base:armhf erlang-asn1:armhf erlang-corba:armhf erlang-crypto:armhf erlang-diameter:armhf erlang-edoc:armhf erlang-eldap:armhf erlang-erl-docgen:armhf erlang-eunit:armhf erlang-ic:armhf erlang-inets:armhf erlang-mnesia:armhf erlang-odbc:armhf erlang-os-mon:armhf erlang-parsetools:armhf erlang-percept:armhf erlang-public-key:armhf erlang-runtime-tools:armhf erlang-snmp:armhf erlang-ssh:armhf erlang-ssl:armhf erlang-syntax-tools:armhf erlang-tools:armhf erlang-webtool:armhf erlang-xmerl:armhf \
+    erlang-reltool:armhf \
+    haproxy:armhf \
+    libicu52:armhf \
+    libmozjs185-1.0:armhf \
     openssl \
   && rm -rf /var/lib/apt/lists/*
 
@@ -65,53 +70,12 @@ RUN set -ex; \
 	fi; \
 	apt-get purge -y --auto-remove wget
 
-# https://www.apache.org/dist/couchdb/KEYS
-ENV GPG_KEYS \
-  15DD4F3B8AACA54740EB78C7B7B7C53943ECCEE1 \
-  1CFBFA43C19B6DF4A0CA3934669C02FFDF3CEBA3 \
-  25BBBAC113C1BFD5AA594A4C9F96B92930380381 \
-  4BFCA2B99BADC6F9F105BEC9C5E32E2D6B065BFB \
-  5D680346FAA3E51B29DBCB681015F68F9DA248BC \
-  7BCCEB868313DDA925DF1805ECA5BCB7BB9656B0 \
-  C3F4DFAEAD621E1C94523AEEC376457E61D50B88 \
-  D2B17F9DA23C0A10991AF2E3D9EE01E47852AEE4 \
-  E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B \
-  29E4F38113DF707D722A6EF91FE9AF73118F1A7C \
-  2EC788AE3F239FA13E82D215CDE711289384AE37
-RUN set -xe \
-  && for key in $GPG_KEYS; do \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-  done
 
-ENV COUCHDB_VERSION 2.1.0
+RUN  mkdir -p /opt/couchdb
+#Copy pre-compiled couchdb From builder 
+#This is to be done as CouchDB doesn't compile on arm64
+COPY --from=builder /opt/couchdb /opt/couchdb
 
-# Download dev dependencies
-RUN buildDeps=' \
-    apt-transport-https \
-    gcc \
-    g++ \
-    git \
-    erlang-dev \
-    libcurl4-openssl-dev \
-    libicu-dev \
-    libmozjs185-dev \
-    make \
-  ' \
- && apt-get update -y -qq && apt-get install -y --no-install-recommends $buildDeps \
- # Acquire CouchDB source code
- && cd /usr/src && mkdir couchdb \
- && curl -fSL https://github.com/apache/couchdb/archive/$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
- && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
- && cd couchdb \
- # Build the release and install into /opt
- && ./configure --disable-docs \
- && make release \
- && mv /usr/src/couchdb/rel/couchdb /opt/ \
- # Cleanup build detritus
- && apt-get purge -y --auto-remove $buildDeps \
- && rm -rf /var/lib/apt/lists/* /usr/src/couchdb* \
- && mkdir /opt/couchdb/data \
- && chown -R couchdb:couchdb /opt/couchdb
 
 # Add configuration
 COPY local.ini /opt/couchdb/etc/local.d/
@@ -120,7 +84,7 @@ COPY vm.args /opt/couchdb/etc/
 COPY ./docker-entrypoint.sh /
 
 # Setup directories and permissions
-RUN chown -R couchdb:couchdb /opt/couchdb/etc/local.d/ /opt/couchdb/etc/vm.args
+RUN chown -R couchdb:couchdb /opt/couchdb
 
 WORKDIR /opt/couchdb
 EXPOSE 5984 4369 9100

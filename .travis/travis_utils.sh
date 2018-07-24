@@ -23,10 +23,6 @@ prepare_package(){
 	if [ -z "$COMMIT" ]; then
 		COMMIT=${TRAVIS_COMMIT::8}
 	fi
-	V200_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.0.0-$VERSION-$BRANCH-$COMMIT
-	V200_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.0
-	V210_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.0-$VERSION-$BRANCH-$COMMIT
-	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 	v212_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.2-$VERSION-$BRANCH-$COMMIT
 	v212_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.2
 	v172_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.2-$VERSION-$BRANCH-$COMMIT
@@ -42,30 +38,6 @@ package_v172(){
 		build_message processing $v172_DOCKER_NAME_LATEST
 		docker tag $v172_DOCKER_NAME $v172_DOCKER_NAME_LATEST
 		build_message done processing $v172_DOCKER_NAME_LATEST
-	fi
-}
-
-package_v200(){
-	build_message processing $V200_DOCKER_NAME
-	docker build 2.0.0/ -t $V200_DOCKER_NAME
-	build_message done processing $V200_DOCKER_NAME
-	if [ "$BRANCH" = "master" ]
-	then
-		build_message processing $V200_DOCKER_NAME_LATEST
-		docker tag $V200_DOCKER_NAME $V200_DOCKER_NAME_LATEST
-		build_message done processing $V200_DOCKER_NAME_LATEST
-	fi
-}
-
-package_v210(){
-	build_message processing $V210_DOCKER_NAME
-	docker build 2.1.0/ -t $V210_DOCKER_NAME
-	build_message done processing $V210_DOCKER_NAME
-	if [ "$BRANCH" = "master" ]
-	then
-		build_message processing $V210_DOCKER_NAME_LATEST
-		docker tag $V210_DOCKER_NAME $V210_DOCKER_NAME_LATEST
-		build_message done processing $V210_DOCKER_NAME_LATEST
 	fi
 }
 
@@ -93,30 +65,6 @@ push_v172(){
 	fi
 }
 
-push_v200(){
-	build_message pushing $V200_DOCKER_NAME
-	docker push $V200_DOCKER_NAME
-	build_message done pushing $V200_DOCKER_NAME
-	if [ "$BRANCH" = "master" ]
-	then
-		build_message pushing $V200_DOCKER_NAME_LATEST
-		docker push $V200_DOCKER_NAME_LATEST
-		build_message done pushing $V200_DOCKER_NAME_LATEST
-	fi
-}
-
-push_v210(){
-	build_message pushing $V210_DOCKER_NAME
-	docker push $V210_DOCKER_NAME
-	build_message done pushing $V210_DOCKER_NAME
-	if [ "$BRANCH" = "master" ]
-	then
-		build_message pushing $V210_DOCKER_NAME_LATEST
-		docker push $V210_DOCKER_NAME_LATEST
-		build_message done pushing $V210_DOCKER_NAME_LATEST
-	fi
-}
-
 push_v212(){
 	build_message pushing $v212_DOCKER_NAME
 	docker push $v212_DOCKER_NAME
@@ -135,20 +83,34 @@ deploy_v172(){
 	push_v172
 }
 
-deploy_v200(){
-	login_docker
-	package_v200
-	push_v200
-}
-
-deploy_v210(){
-	login_docker
-	package_v210
-	push_v210
-}
 
 deploy_v212(){
 	login_docker
+	package_v212
+	push_v212
+}
+
+deploy_v172_arm64(){
+	login_docker
+	sed -i -e "s/\(resin\/rpi-raspbian\)/resin\/aarch64-debian/" 1.7.2/Dockerfile
+	v172_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2"
+	v172_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2-$VERSION-$BRANCH-$COMMIT"
+	package_v172
+	push_v172
+}
+
+deploy_v212_arm64(){
+	login_docker
+	rm 2.1.2/Dockerfile
+    mv 2.1.2/Dockerfile-arm64 2.1.2/Dockerfile
+    if [ "$BRANCH" = "master" ]
+	then
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v212_DOCKER_NAME_LATEST|" 2.1.2/Dockerfile
+    else
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v212_DOCKER_NAME|" 2.1.2/Dockerfile
+    fi
+	v212_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2"
+	v212_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2-$VERSION-$BRANCH-$COMMIT"
 	package_v212
 	push_v212
 }
