@@ -67,13 +67,13 @@ build_message Build V212 image started...
 deploy_v212
 build_message Build V212 image finished, check build result!
 
-build_message Build V171 arm64 image started...
-deploy_v171_arm64
-build_message Build V171 arm64 image finished, check build result!
+build_message Build V172 arm64 image started...
+deploy_v172_arm64
+build_message Build V172 arm64 image finished, check build result!
 
-build_message Build V211 arm64 image started...
-deploy_v211_arm64
-build_message Build V211 arm64 image finished, check build result!
+build_message Build V212 arm64 image started...
+deploy_v212_arm64
+build_message Build V212 arm64 image finished, check build result!
 
 build_message Preparing to Push multi-arch manifest to Docker Cloud ..
 deploy_multiarch
