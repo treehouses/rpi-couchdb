@@ -25,6 +25,10 @@ For RPi CouchDB 1.7.1
 ```
 docker pull treehouses/couchdb:1.7.1
 ```
+For RPi CouchDB 1.7.2
+```
+docker pull treehouses/couchdb:1.7.2
+```
 For RPi CouchDB 2.0.0
 ```
 docker pull treehouses/couchdb:2.0.0
@@ -36,6 +40,10 @@ docker pull treehouses/couchdb:2.1.0
 For RPi CouchDB 2.1.1
 ```
 docker pull treehouses/couchdb:2.1.1
+```
+For RPi CouchDB 2.1.2
+```
+docker pull treehouses/couchdb:2.1.2
 ```
 
 ## About OLE

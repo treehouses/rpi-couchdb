@@ -78,7 +78,7 @@ RUN set -xe \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
-ENV COUCHDB_VERSION 1.7.1
+ENV COUCHDB_VERSION 1.7.2
 
 # download dependencies, compile and install couchdb,
 # set correct permissions, expose couchdb to the outside and disable logging to disk
