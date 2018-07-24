@@ -23,10 +23,6 @@ prepare_package(){
 	if [ -z "$COMMIT" ]; then
 		COMMIT=${TRAVIS_COMMIT::8}
 	fi
-	V200_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.0.0-$VERSION-$BRANCH-$COMMIT
-	V200_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.0.0
-	V210_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.0-$VERSION-$BRANCH-$COMMIT
-	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 	v212_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.2-$VERSION-$BRANCH-$COMMIT
 	v212_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.2
 	v172_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.2-$VERSION-$BRANCH-$COMMIT
@@ -97,8 +93,8 @@ deploy_v212(){
 deploy_v172_arm64(){
 	login_docker
 	sed -i -e "s/\(resin\/rpi-raspbian\)/resin\/aarch64-debian/" 1.7.2/Dockerfile
-	V172_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2"
-	V172_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2-$VERSION-$BRANCH-$COMMIT"
+	v172_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2"
+	v172_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-1.7.2-$VERSION-$BRANCH-$COMMIT"
 	package_v172
 	push_v172
 }
@@ -109,12 +105,12 @@ deploy_v212_arm64(){
     mv 2.1.2/Dockerfile-arm64 2.1.2/Dockerfile
     if [ "$BRANCH" = "master" ]
 	then
-        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$V211_DOCKER_NAME_LATEST|" 2.1.2/Dockerfile
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v211_DOCKER_NAME_LATEST|" 2.1.2/Dockerfile
     else
-        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$V211_DOCKER_NAME|" 2.1.2/Dockerfile
+        sed -i -e "s|\(treehouses\/rpi-couchdb:2\.1\.2\)|$v211_DOCKER_NAME|" 2.1.2/Dockerfile
     fi
-	V212_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2"
-	V212_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2-$VERSION-$BRANCH-$COMMIT"
+	v212_DOCKER_NAME_LATEST="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2"
+	v212_DOCKER_NAME="$DOCKER_ORG/$DOCKER_REPO:arm64-2.1.2-$VERSION-$BRANCH-$COMMIT"
 	package_v212
 	push_v212
 }
