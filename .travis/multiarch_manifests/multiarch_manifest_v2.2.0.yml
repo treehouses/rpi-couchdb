@@ -1,4 +1,4 @@
-image: treehouses/couchdb:latest
+image: treehouses/couchdb:2.2.0
 manifests:
   -
     image: treehouses/rpi-couchdb:2.2.0
