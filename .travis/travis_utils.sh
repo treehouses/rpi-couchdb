@@ -29,6 +29,8 @@ prepare_package(){
 	V210_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.0
 	v212_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.1.2-$VERSION-$BRANCH-$COMMIT
 	v212_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.2
+	v220_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.2.0-$VERSION-$BRANCH-$COMMIT
+	v220_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.2.0
 	v172_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.2-$VERSION-$BRANCH-$COMMIT
 	v172_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.2
 }
@@ -81,6 +83,18 @@ package_v212(){
 	fi
 }
 
+package_v220(){
+	build_message processing $v220_DOCKER_NAME
+	docker build 2.2.0/ -t $v220_DOCKER_NAME
+	build_message done processing $v220_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message processing $v220_DOCKER_NAME_LATEST
+		docker tag $v220_DOCKER_NAME $v220_DOCKER_NAME_LATEST
+		build_message done processing $v220_DOCKER_NAME_LATEST
+	fi
+}
+
 push_v172(){
 	build_message pushing $v172_DOCKER_NAME
 	docker push $v172_DOCKER_NAME
@@ -129,6 +143,18 @@ push_v212(){
 	fi
 }
 
+push_v220(){
+	build_message pushing $v220_DOCKER_NAME
+	docker push $v220_DOCKER_NAME
+	build_message done pushing $v220_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message pushing $v220_DOCKER_NAME_LATEST
+		docker push $v220_DOCKER_NAME_LATEST
+		build_message done pushing $v220_DOCKER_NAME_LATEST
+	fi
+}
+
 deploy_v172(){
 	login_docker
 	package_v172
@@ -153,6 +179,12 @@ deploy_v212(){
 	push_v212
 }
 
+deploy_v220(){
+	login_docker
+	package_v220
+	push_v220
+}
+
 deploy_multiarch(){
     if [ "$BRANCH" = "master" ]
 	then
@@ -161,6 +193,7 @@ deploy_multiarch(){
         wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
         chmod +x ./manifest-tool
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.2.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.2.0.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.2.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_latest.yml
         build_message Successfully pushed multi-arch manifest to Docker Cloud.
