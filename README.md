@@ -1,44 +1,41 @@
 # Raspberry Pi CouchDB Docker Image
-
 [![Build Status](https://travis-ci.org/treehouses/rpi-couchdb.svg?branch=master)](https://travis-ci.org/treehouses/rpi-couchdb)
 
-It is a fork of https://github.com/apache/couchdb-docker but for raspberrypi.
-This is an effort to dockerize CouchDB to be able to run on Raspberry Pi.
 
-## Credits
-Credits to [klaemo](https://github.com/klaemo) and [apache](https://github.com/apache/couchdb-docker) for initial effort.
+## Multi Architecture CouchDB Docker Image (Tested on Raspberry Pi)
+
+It is a fork of https://github.com/apache/couchdb-docker but for raspberrypi. This is an effort to dockerize CouchDB to be able to run on Raspberry Pi.
+
+# Supported Tags (Versions)
+* [![](https://images.microbadger.com/badges/version/treehouses/couchdb:2.2.0.svg)](https://microbadger.com/images/treehouses/couchdb:2.2.0 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/treehouses/couchdb:2.2.0.svg)](https://microbadger.com/images/treehouses/couchdb:2.2.0 "Get your own image badge on microbadger.com")
+* [![](https://images.microbadger.com/badges/version/treehouses/couchdb:2.1.2.svg)](https://microbadger.com/images/treehouses/couchdb:2.1.2 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/treehouses/couchdb:2.1.2.svg)](https://microbadger.com/images/treehouses/couchdb:2.1.2 "Get your own image badge on microbadger.com")
+* [![](https://images.microbadger.com/badges/version/treehouses/couchdb:2.1.1.svg)](https://microbadger.com/images/treehouses/couchdb:2.1.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/treehouses/couchdb:2.1.1.svg)](https://microbadger.com/images/treehouses/couchdb:2.1.1 "Get your own image badge on microbadger.com")
+* [![](https://images.microbadger.com/badges/version/treehouses/couchdb:1.7.2.svg)](https://microbadger.com/images/treehouses/couchdb:1.7.2 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/treehouses/couchdb:1.7.2.svg)](https://microbadger.com/images/treehouses/couchdb:1.7.2 "Get your own image badge on microbadger.com")
+* [![](https://images.microbadger.com/badges/version/treehouses/couchdb:1.7.1.svg)](https://microbadger.com/images/treehouses/couchdb:1.7.1 "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/treehouses/couchdb:1.7.1.svg)](https://microbadger.com/images/treehouses/couchdb:1.7.1 "Get your own image badge on microbadger.com")
+
+# Supported Architectures
+`amd64`,`arm`
+**Note:** v2.0.0 and v2.1.0 only supports `arm` architecture
 
 ## Where it hosted
 
 This work is hosted in [treehouses/couchdb](https://hub.docker.com/r/treehouses/couchdb/)
 
-## Naming and Versioning
+## Credits
+Credits to [klaemo](https://github.com/klaemo) and [apache](https://github.com/apache/couchdb-docker) for initial effort.
+Credits to [Sahil Phule](https://github.com/sahilph) and [empeje](https://github.com/empeje) for maintaining this repo.
 
-Currently we maintain multi-architecture repository of 2.x.x version as well as 1.7.1 of CouchDB. Supported architectures: `amd64, arm`
+## Repository
+`ARM`: https://github.com/treehouses/rpi-couchdb (For Raspberry Pi)
+`AMD64`:https://github.com/docker-library/docs/tree/master/couchdb (Official Repo)
 
-For RPi CouchDB 1.7.1
+## Features
+* Customize Credentials
+
+## How to use
+
 ```
-docker pull treehouses/couchdb:1.7.1
-```
-For RPi CouchDB 1.7.2
-```
-docker pull treehouses/couchdb:1.7.2
-```
-For RPi CouchDB 2.0.0
-```
-docker pull treehouses/couchdb:2.0.0
-```
-For RPi CouchDB 2.1.0
-```
-docker pull treehouses/couchdb:2.1.0
-```
-For RPi CouchDB 2.1.1
-```
-docker pull treehouses/couchdb:2.1.1
-```
-For RPi CouchDB 2.1.2
-```
-docker pull treehouses/couchdb:2.1.2
+docker run -p 5984:5984 -d -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password treehouses/couchdb:2.1.0
 ```
 
 ## About OLE
