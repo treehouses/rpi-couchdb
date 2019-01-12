@@ -31,6 +31,8 @@ prepare_package(){
 	v212_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.1.2
 	v220_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.2.0-$VERSION-$BRANCH-$COMMIT
 	v220_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.2.0
+	V230_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:2.3.0-$VERSION-$BRANCH-$COMMIT
+	V230_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:2.3.0
 	v172_DOCKER_NAME=$DOCKER_ORG/$DOCKER_REPO:1.7.2-$VERSION-$BRANCH-$COMMIT
 	v172_DOCKER_NAME_LATEST=$DOCKER_ORG/$DOCKER_REPO:1.7.2
 }
@@ -95,6 +97,18 @@ package_v220(){
 	fi
 }
 
+package_v230(){
+	build_message processing $V230_DOCKER_NAME
+	docker build 2.3.0/ -t $V230_DOCKER_NAME
+	build_message done processing $V230_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message processing $V230_DOCKER_NAME_LATEST
+		docker tag $V230_DOCKER_NAME $V230_DOCKER_NAME_LATEST
+		build_message done processing $V230_DOCKER_NAME_LATEST
+	fi
+}
+
 push_v172(){
 	build_message pushing $v172_DOCKER_NAME
 	docker push $v172_DOCKER_NAME
@@ -155,6 +169,18 @@ push_v220(){
 	fi
 }
 
+push_v230(){
+	build_message pushing $V230_DOCKER_NAME
+	docker push $V230_DOCKER_NAME
+	build_message done pushing $V230_DOCKER_NAME
+	if [ "$BRANCH" = "master" ]
+	then
+		build_message pushing $V230_DOCKER_NAME_LATEST
+		docker push $V230_DOCKER_NAME_LATEST
+		build_message done pushing $V230_DOCKER_NAME_LATEST
+	fi
+}
+
 deploy_v172(){
 	login_docker
 	package_v172
@@ -183,6 +209,12 @@ deploy_v220(){
 	login_docker
 	package_v220
 	push_v220
+}
+
+deploy_v230(){
+	login_docker
+	package_v230
+	push_v230
 }
 
 deploy_multiarch(){
