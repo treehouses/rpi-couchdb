@@ -71,6 +71,10 @@ build_message Build V220 image started...
 deploy_v220
 build_message Build V220 image finished, check build result!
 
+build_message Build V230 image started...
+deploy_v230
+build_message Build V230 image finished, check build result!
+
 build_message Preparing to Push multi-arch manifest to Docker Cloud ..
 deploy_multiarch
 
