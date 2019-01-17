@@ -226,6 +226,7 @@ deploy_multiarch(){
         chmod +x ./manifest-tool
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.1.2.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.2.0.yml
+        ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v2.3.0.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_v1.7.2.yml
         ./manifest-tool push from-spec ./.travis/multiarch_manifests/multiarch_manifest_latest.yml
         build_message Successfully pushed multi-arch manifest to Docker Cloud.
