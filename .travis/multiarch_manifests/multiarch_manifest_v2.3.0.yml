@@ -6,7 +6,7 @@ manifests:
       architecture: arm
       os: linux
   -
-    image: couchdb:2.3.0
+    image: amd64/couchdb:2.3.0
     platform:
       architecture: amd64
       os: linux
