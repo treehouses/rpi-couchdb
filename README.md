@@ -1,6 +1,6 @@
 # Raspberry Pi CouchDB Docker Image
 
-[![Build Status](https://travis-ci.org/treehouses/rpi-couchdb.svg?branch=master)](https://travis-ci.org/treehouses/rpi-couchdb) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/treehouses/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/treehouses/rpi-couchdb.svg?branch=master)](https://travis-ci.org/treehouses/rpi-couchdb) [![Docker Stars](https://img.shields.io/docker/stars/treehouses/couchdb.svg?maxAge=604800)](https://store.docker.com/community/images/treehouses/couchdb) [![Docker Pulls](https://img.shields.io/docker/pulls/treehouses/couchdb.svg?maxAge=604800)](https://store.docker.com/community/images/treehouses/couchdb) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/treehouses/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ## Multi Architecture CouchDB Docker Image (Tested on Raspberry Pi)
