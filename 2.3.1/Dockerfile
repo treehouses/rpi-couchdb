@@ -1,7 +1,7 @@
 # The Dockerfile is Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
 
-FROM resin/rpi-raspbian
-LABEL maintainer="sahil@ole.org,mappuji@ole.org"
+FROM debian:stretch-slim
+LABEL maintainer="lillyxxx@ole.org,dogi@ole.org"
 
 # Add CouchDB user account
 RUN groupadd -r couchdb && useradd -d /opt/couchdb -g couchdb couchdb
