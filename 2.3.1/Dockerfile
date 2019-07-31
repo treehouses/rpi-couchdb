@@ -19,6 +19,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 
 # grab gosu for easy step-down from root and tini for signal handling
 # see https://github.com/apache/couchdb-docker/pull/28#discussion_r141112407
+# Update GOSU to 1.11 and Tini to 0.18.0
 ENV GOSU_VERSION 1.10
 ENV TINI_VERSION 0.16.1
 RUN set -ex; \
@@ -55,6 +56,7 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove wget
 
 # https://www.apache.org/dist/couchdb/KEYS
+# The key part?
 ENV GPG_KEYS \
   15DD4F3B8AACA54740EB78C7B7B7C53943ECCEE1 \
   1CFBFA43C19B6DF4A0CA3934669C02FFDF3CEBA3 \
@@ -72,7 +74,7 @@ RUN set -xe \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
-ENV COUCHDB_VERSION 2.3.0
+ENV COUCHDB_VERSION 2.3.1
 
 # Download dev dependencies
 RUN buildDeps=' \
