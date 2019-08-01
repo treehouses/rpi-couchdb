@@ -1,0 +1,16 @@
+# Ensure that the Erlang VM listens on a known port
+-kernel inet_dist_listen_min 9100
+-kernel inet_dist_listen_max 9100
+
+# Tell kernel and SASL not to log anything
+-kernel error_logger silent
+-sasl sasl_error_logger false
+
+# Use kernel poll functionality if supported by emulator
++K true
+
+# Start a pool of asynchronous IO threads
++A 16
+
+# Comment this line out to enable the interactive Erlang shell on startup
++Bd -noinput
