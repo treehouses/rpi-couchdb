@@ -20,8 +20,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 # grab gosu for easy step-down from root and tini for signal handling
 # see https://github.com/apache/couchdb-docker/pull/28#discussion_r141112407
 # Update GOSU to 1.11 and Tini to 0.18.0
-ENV GOSU_VERSION 1.10
-ENV TINI_VERSION 0.16.1
+ENV GOSU_VERSION 1.11
+ENV TINI_VERSION 0.18.0
 RUN set -ex; \
 	\
 	apt-get update; \
