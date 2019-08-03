@@ -1,6 +1,6 @@
 # The Dockerfile is Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
 
-FROM balenalib/rpi-raspbian:jessie
+FROM balenalib/rpi-raspbian:stretch
 LABEL maintainer="lillyxxx@ole.org,dogi@ole.org"
 
 # Add CouchDB user account
@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     erlang-nox \
     erlang-reltool \
     haproxy \
-    libicu52 \
+    libicu57 \
     libmozjs185-1.0 \
     openssl \
   && rm -rf /var/lib/apt/lists/*
