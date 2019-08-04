@@ -1,6 +1,6 @@
 # The Dockerfile is Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
 
-FROM balenalib/rpi-raspbian:stretch
+FROM balenalib/rpi-raspbian:buster
 LABEL maintainer="lillyxxx@ole.org,dogi@ole.org"
 
 # Add CouchDB user account
@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     erlang-nox \
     erlang-reltool \
     haproxy \
-    libicu57 \
+    libicu63 \
     libmozjs185-1.0 \
     openssl \
   && rm -rf /var/lib/apt/lists/*
@@ -90,8 +90,8 @@ RUN buildDeps=' \
  && apt-get update -y -qq && apt-get install -y --no-install-recommends $buildDeps \
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz -k \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc -k \
  && gpg --batch --verify couchdb.tar.gz.asc couchdb.tar.gz \
  && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
  && cd couchdb \
