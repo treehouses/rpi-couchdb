@@ -90,8 +90,9 @@ RUN buildDeps=' \
  && apt-get update -y -qq && apt-get install -y --no-install-recommends $buildDeps \
  # Acquire CouchDB source code
  && cd /usr/src && mkdir couchdb \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz -k \
- && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc -k \
+ && c_rehas \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz -o couchdb.tar.gz \
+ && curl -fSL https://dist.apache.org/repos/dist/release/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz.asc -o couchdb.tar.gz.asc \
  && gpg --batch --verify couchdb.tar.gz.asc couchdb.tar.gz \
  && tar -xzf couchdb.tar.gz -C couchdb --strip-components=1 \
  && cd couchdb \
