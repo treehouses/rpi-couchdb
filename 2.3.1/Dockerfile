@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     erlang-nox \
     erlang-reltool \
     haproxy \
-    libicu63 \
+    libicu57 \
     libmozjs185-1.0 \
     openssl \
   && rm -rf /var/lib/apt/lists/*
