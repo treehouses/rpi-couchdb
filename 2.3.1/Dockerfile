@@ -1,6 +1,6 @@
 # The Dockerfile is Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
 
-FROM balenalib/rpi-raspbian:buster
+FROM balenalib/rpi-raspbian:stretch
 LABEL maintainer="lillyxxx@ole.org,dogi@ole.org"
 
 # Add CouchDB user account
